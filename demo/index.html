@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="da" style="font-size: 100%">
+<head>
+	<title>fcoo.dk - fcoo-value-format - Demo</title>
+	<meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta http-equiv='x-dns-prefetch-control' content='on'>
+
+	<meta name='copyright' content='FCOO'>
+	<meta name='owner' content='FCOO'>
+
+  <link  href="bower_components.css" rel="stylesheet">	
+</head>
+
+<body style="font-family: Verdana" >
+    <h2>language</h2>
+    <select id="languageFormat"></select>
+
+    <h2>number & distance</h2>
+    <select id="numberFormat"></select>
+    <br>
+    <br>
+    <div data-vf-format="number" data-vf-value="1000.123"></div>
+    <div data-vf-format="number" data-vf-value="1234"></div>
+    <div data-vf-format="number" data-vf-value="1000.123456789" data-vf-options="{'decimals':'5'}"></div>
+    <div data-vf-format="number" data-vf-value="1000.123456789" data-vf-options="{'decimals':0}"></div>
+
+    <div data-vf-format="distance" data-vf-value="1000.123"></div>
+    <div data-vf-format="distance" data-vf-value="1234"></div>
+    <div data-vf-format="distance" data-vf-value="1000.123456789" data-vf-options="{'unit':'nm'}"></div>
+    <div data-vf-format="distance" data-vf-value="1000.123456789" data-vf-options="{'decimals':4, 'unit':'km'}"></div>
+	
+    <hr>
+    <h2>lat & lng & latlng</h2>
+    <select id="latlngFormat"></select>
+    <br>
+    <br>
+    <div id="lat" data-vf-format="lat"></div>	
+    <div id="lng" data-vf-format="lng"></div>	
+    <div id="latlng" data-vf-format="latlng"></div>	
+    
+    <hr>
+    <h2>date & time & timezone</h2>
+    <select id="timeFormat"></select>
+    <select id="dateFormat"></select>
+    <select id="timezoneFormat"></select>
+    <br>
+    <br>
+    <table id="date_table" border=1 style="border:1px solid black; border-collapse: collapse;">
+    <tr><th>formatId</th><th>Result</th></tr></table>
+
+    <hr>
+    <h2>date with saveAsMoment</h2>
+    <div id="timedate_obj" style="border:1px solid black; text-align:center; padding.4px; width:400px" data-vf-format="datetime_long" data-vf-options="{'saveAsMoment':true}"></div>
+    <button id="update_moment">Click to add 13 min</button>
+    
+    <script src="bower_components.js"></script>
+	<script src="../src/fcoo-value-format.js"></script>
+	<script>
+        function createSelect( selectId, settingId, list ){
+            var select = $('#'+selectId),
+                selectedValue = fcoo.settings.get(settingId);
+
+            select.on('change', function ( e ){ fcoo.settings.set(settingId, e.target.selectedOptions[0].value); });
+
+            for (var i=0; i<list.length; i++ ){
+                var option = $('<option value="'+list[i].id+'">'+ list[i].text +'</option>').appendTo( select );           
+                if (selectedValue == list[i].id)
+                    option.attr('selected', true);   
+            }
+        }
+       
+        
+        //LANGUAGE
+        createSelect( 'languageFormat', 'language', [{id:"da", text:'Dansk / Danish'}, {id:'en', text:'Engelsk / English'}]);
+        
+        //NUMBER
+        function numberFormatChanged( e ){ 
+            fcoo.settings.set('number', e.target.selectedOptions[0].value);
+        }
+        var select = $('#numberFormat');
+        select.on('change', numberFormatChanged);
+        var numberFormat = fcoo.settings.get('number');
+        $.each( window.fcoo.NumeralJsDelimiters, function( key, options ){
+            var option = $('<option value="'+key+'">'+ options.example +'</option>').appendTo( select );           
+            if (numberFormat == key)
+                option.attr('selected', true);   
+        });
+    
+
+        //LATLNG
+        function latlngFormatChanged( e ){ 
+            fcoo.settings.set('latlng', parseInt(e.target.selectedOptions[0].value));
+        }
+        select = $('#latlngFormat');
+        select.on('change', latlngFormatChanged);
+        var latlngFormat = fcoo.settings.get('latlng'),
+            latlngFormats = ["55°07'11,9\"N", "55°07,123'N", '55,1276°N'];
+        $.each( latlngFormats, function( id, text ){ 
+            var option = $('<option value="'+id+'">'+ text +'</option>').appendTo( select );           
+            if (latlngFormat == id)
+                option.attr('selected', true);   
+        });
+
+        var  latLng = L.latLng(55.12, 12.987);
+        $('#lat').vfValue( latLng );
+        $('#lng').vfValue( latLng );
+        latLng.lng = 13.123;
+        $('#latlng').vfValue( latLng, {separator:' and '} );
+
+
+
+        //MOMENT
+        createSelect( 'timeFormat', 'time', [{id:'24', text:'13:00'}, {id:'12', text:'01:00pm'}]);
+
+        createSelect( 'dateFormat', 'date', [{id:'DMY', text:'D-M-Y'}, {id:'MDY', text:'M-D-Y'}, {id:'YMD', text:'Y-M-D'}]);
+        
+        moment.sfAddTimezone([ {id:'Asia/Tokyo'}, {id:'America/Los_Angeles',	name:'America/LA'} ]);
+
+        var list = [];
+        for (var i=0; i<moment.simpleFormat.timezoneList.length; i++ )
+            list.push({id:moment.simpleFormat.timezoneList[i].id, text:moment.simpleFormat.timezoneList[i].fullName});
+        createSelect( 'timezoneFormat', 'timezone', list);
+
+
+        var now = moment(),
+            idList = [  
+                        "time", "hour", "time_utc", "hour_utc", 
+                        "date", "date_long", "date_short", "date_utc", "date_long_utc", "date_short_utc", "date_format_utc", 
+                        "datetime", "datetime_long", "datetime_short", "datetime_utc", "datetime_long_utc", "datetime_short_utc", "datetime_format_utc", 
+                        "timezone", "timezone_full"
+                    ],
+            $table = $('#date_table');
+
+        function addRow( formatId, options, name ){
+            $('<tr></tr>').appendTo( $table )
+                .append( $('<td><code>'+(name || formatId) +'</code></td>') )
+                .append( $('<td></td>').append( $('<span></span>').vfFormat( formatId ).vfValue( now ).vfOptions( options ) ) );
+        }
+
+        for (var i=0; i<idList.length; i++ )
+            addRow( idList[i] );
+
+            
+        //Special version
+        addRow( 'datetime_format', {
+                    dateFormat     : {weekday: 'Full',  month: 'Full',  year: 'None' }, 
+                    showTimezone   : 'FULL', 
+                    inclParenthesis: true
+                }, 'SPECIAL VERSION' 
+        );
+   
+
+        var test_moment = moment();
+        $('#timedate_obj').vfValue(test_moment); 
+        $('#update_moment').on('click', function(){
+            test_moment.add(13, 'm');
+            $('#timedate_obj').vfUpdate();
+        });
+
+    </script>
+</body>
+</html>

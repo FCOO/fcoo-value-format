@@ -1,0 +1,37 @@
+{
+  "name": "fcoo-value-format",
+  "version": "1.0.0",
+  "homepage": "https://github.com/FCOO/fcoo-value-format",
+  "authors": [
+    "Niels Holt"
+  ],
+  "description": "",
+  "main": [
+    "dist/fcoo-value-format.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/FCOO/fcoo-value-format.git"
+  },
+  "dependencies": {
+    "jquery": "latest",
+    "fcoo-number": "fcoo/fcoo-number#^1.0.0",
+    "fcoo-latlng-format": "fcoo/fcoo-latlng-format#^1.0.0",
+    "fcoo-moment": "fcoo/fcoo-moment",
+    "jquery-value-format": "fcoo/jquery-value-format#^1.1.0",
+    "leaflet-latlng-format": "fcoo/leaflet-latlng-format#^1.0.0",
+    "leaflet": "^1.0.3"
+  },
+  "devDependencies": {},
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "moduleType": [
+    "es6"
+  ]
+}
