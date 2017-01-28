@@ -1,15 +1,24 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="da" style="font-size: 100%">
 <head>
-	<title>fcoo.dk - fcoo-value-format - Demo</title>
+    <title>fcoo.dk - fcoo-value-format - Demo</title>
 	<meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta http-equiv='x-dns-prefetch-control' content='on'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv='x-dns-prefetch-control' content='on'>
 
 	<meta name='copyright' content='FCOO'>
 	<meta name='owner' content='FCOO'>
 
-  <link  href="bower_components.css" rel="stylesheet">	
+    <link  href="bower_components.css" rel="stylesheet">	
+    <style>
+        .timedate_obj {
+            border:1px solid black; 
+            text-align:center; 
+            padding:4px; 
+            width:400px;
+        }
+    </style>
+
 </head>
 
 <body style="font-family: Verdana" >
@@ -51,8 +60,13 @@
 
     <hr>
     <h2>date with saveAsMoment</h2>
-    <div id="timedate_obj" style="border:1px solid black; text-align:center; padding.4px; width:400px" data-vf-format="datetime_long" data-vf-options="{'saveAsMoment':true}"></div>
-    <button id="update_moment">Click to add 13 min</button>
+    <div class="timedate_obj" data-vf-format="datetime_long" data-vf-options="{'saveAsMoment':true}"></div>
+    <div class="timedate_obj" data-vf-format="relative" data-vf-options="{'saveAsMoment':true}"></div>
+    <div class="timedate_obj" data-vf-format="relative_h" data-vf-options="{'saveAsMoment':true}"></div>
+    <div class="timedate_obj" data-vf-format="relative_hm" data-vf-options="{'saveAsMoment':true}"></div>
+    <div class="timedate_obj" data-vf-format="relative_dhm" data-vf-options="{'saveAsMoment':true}"></div>
+
+    <button id="update_moment">Click to add 63 min</button>
     
     <script src="bower_components.js"></script>
 	<script src="../src/fcoo-value-format.js"></script>
@@ -152,10 +166,10 @@
    
 
         var test_moment = moment();
-        $('#timedate_obj').vfValue(test_moment); 
+        $('.timedate_obj').vfValue(test_moment); 
         $('#update_moment').on('click', function(){
-            test_moment.add(13, 'm');
-            $('#timedate_obj').vfUpdate();
+            test_moment.add(63, 'm');
+            $('.timedate_obj').vfUpdate();
         });
 
     </script>

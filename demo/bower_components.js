@@ -11524,6 +11524,24 @@ return jQuery;
         }()
     );
 
+
+    //Overwrite Url._updateAll to handle Security Error in Safari on Mac that prevent more that 100 history updates in 30 sec
+    window.Url._updateAll = function(s, push, triggerPopState) {
+        try {
+            window.history[push ? "pushState" : "replaceState"](null, "", s);          
+        }
+        catch (e) {
+            //Use 'old' methods - perhaps it will reload the page 
+            window.location.replace( s );
+        }
+        
+        if (triggerPopState) {
+            window.Url.triggerPopStateCb({});
+        }
+        return s;
+    };
+
+
     /******************************************
     anyString(name, notDecoded, search, sep)
     Copy of Url.queryString with optional input string (search) 
@@ -11646,17 +11664,11 @@ return jQuery;
             newSearch = this._correctSearchOrHash( oldSearch, '?' ),
             oldHash   = window.location.hash,
             newHash   = this._correctSearchOrHash( oldHash, '#' ),
-            newUrl    = window.location.pathname +  //OR window.location.protocol + "//" + window.location.host + (window.location.host ? "/" : "") + window.location.pathname +
+            newUrl    = window.location.pathname +  
                           (newSearch ? '?' + encodeURI(newSearch) : '') + 
                           (newHash   ? '#' + encodeURI(newHash)   : '');
 
-        //If the search is unchanged => only change the hash - and only if hash is changed
-        if (oldSearch.substring(1) == newSearch){
-            if (oldHash.substring(1) != newHash)
-                window.location.hash = newHash;            
-        }        
-        else 
-            this._updateAll( newUrl );          
+        this._updateAll( newUrl );          
         return newUrl;
     }
 
@@ -16450,8 +16462,45 @@ return index;
 
 }(jQuery, this, document));
 ;
+/****************************************************************************
+	modernizr-javascript.js, 
+
+	(c) 2016, FCOO
+
+	https://github.com/FCOO/modernizr-javascript
+	https://github.com/FCOO
+
+****************************************************************************/
+
+(function ($, window/*, document, undefined*/) {
+	"use strict";
+	
+	var ns = window;
+
+    //Extend the jQuery prototype
+    $.fn.extend({
+        modernizrOn : function( test ){ return this.modernizrToggle( test, true ); },
+
+        modernizrOff: function( test ){ return this.modernizrToggle( test, false ); },
+        
+        modernizrToggle: function( test, on ){ 
+                            on = !!on; //on => Boolean
+                            return this.toggleClass( test, on ).toggleClass( 'no-' + test, !on );
+                         }
+    });
+
+
+    //Add methods to window = works on <html>
+    ns.modernizrOn  = function( test ){ ns.modernizrToggle( test, true ); };
+
+    ns.modernizrOff = function( test ){ ns.modernizrToggle( test, false ); };
+
+    ns.modernizrToggle = function( test, on ){ $('html').modernizrToggle( test, on ); };
+
+}(jQuery, this, document));
+;
 //! moment.js
-//! version : 2.17.0
+//! version : 2.17.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -20716,7 +20765,7 @@ addParseToken('x', function (input, array, config) {
 // Side effect imports
 
 
-hooks.version = '2.17.0';
+hooks.version = '2.17.1';
 
 setHookCallback(createLocal);
 
@@ -23196,10 +23245,17 @@ return fo;
     ********************************************************************/
     moment.fn.relativeFormat = function( options ) { 
         return this._sfAnyFormat( options, function(){
-            var minDiff = this.diff( moment() , '', true),
+            var mom = moment( this ).round(1, 'minutes'),
+                now = moment().round(1, 'minutes'),
+                minDiff = mom.diff( now, 'minutes'), //this.diff( moment() , '', true),
                 sign = minDiff < 0 ? '-' : '+';
+
             minDiff = Math.abs( minDiff ) ;
-            return (namespace.options.relativeFormat.now ? namespace.options.text.now : '') + sign + moment.duration(minDiff).format( namespace.relativeFormat );
+            if (namespace.options.relativeFormat.now && (minDiff == 0))
+                //Special case for 'now+0h' => 'now'
+                return namespace.options.text.now;
+
+            return (namespace.options.relativeFormat.now ? namespace.options.text.now : '') + sign + moment.duration(minDiff, 'minutes').format( namespace.relativeFormat );
         });
     };
 
@@ -23221,7 +23277,7 @@ Sections:
 1: Translation for moment-simple-format
 2: Add time-zones and translation of there names
 4: 
-5: 
+5: Define common Modernizr-tests used to display moment
 6: Load format for date, time and timezone from fcoo.settings
 
 ****************************************************************************/
@@ -23334,6 +23390,22 @@ Greenland
 
 
 
+
+    /***********************************************************************
+    ************************************************************************
+    5: Define common Modernizr-tests used to display moment
+    ************************************************************************
+    ***********************************************************************/
+
+    /* The following Modernizr-test are deffined in fcoo-moment.scss and are set in momentSimpleFormatSetFormat
+    showrelative: Show also the date/time as relative to now. Can be created using fcoo-value-format 
+    showutc     : Show also the date/time in UTC
+    timezoneutc : On when the selected time zone is UTC
+
+    NOTE: To only show a element when the user has selected "showutc" AND the time zone isn't UTC: class="show-for-showutc hide-for-timezoneutc"
+    */
+
+
     /***********************************************************************
     ************************************************************************
     6: Load format for date, time and timezone from fcoo.settings
@@ -23342,17 +23414,27 @@ Greenland
     //function to set options in moment.simpleFormat and call global event
     function momentSimpleFormatSetFormat( options ){
         options = $.extend( true, {}, {
-                        'date'    : window.fcoo.settings.get('date'),
-                        'time'    : window.fcoo.settings.get('time'),
-                        'timezone': window.fcoo.settings.get('timezone'),
+                        'date'              : window.fcoo.settings.get('date'),
+                        'time'              : window.fcoo.settings.get('time'),
+                        'timezone'          : window.fcoo.settings.get('timezone'),
+                        '_fcoo_showrelative': window.fcoo.settings.get('showrelative'),
+                        '_fcoo_showutc'     : window.fcoo.settings.get('showutc'),
                     }, 
                     options );
-       
+        
+        //Update moment-formats
         moment.sfSetFormat( options );
+
+        //Update modernizr-test
+        window.modernizrToggle( 'showrelative', options._fcoo_showrelative );
+        window.modernizrToggle( 'showutc',      options._fcoo_showutc );
+        window.modernizrToggle( 'timezoneutc',  options.timezone == 'utc');
+
+        //Fire global event
         window.fcoo.events.fire('datetimeformatchanged');
     }
 
-    //Set up and load 'date', 'time', and 'timezone' via fcoo.settings
+    //Set up and load 'date', 'time', 'timezone', 'showrelative', and 'showutc'  via fcoo.settings
     window.fcoo.settings.add({
         id          : 'date', 
         validator   : function( date ){ return $.inArray( date, ['DMY', 'MDY', 'YMD']) > -1; },
@@ -23374,6 +23456,21 @@ Greenland
         defaultValue: 'local',
         callApply   : false
     });
+    window.fcoo.settings.add({
+        id          : 'showrelative', 
+        validator   : function( showrelative ){ return jQuery.type( showrelative ) === "boolean";                    },
+        applyFunc   : function( showrelative ){ momentSimpleFormatSetFormat({ '_fcoo_showrelative': showrelative }); }, 
+        defaultValue: false,
+        callApply   : false
+    });
+    window.fcoo.settings.add({
+        id          : 'showutc', 
+        validator   : function( showutc ){ return jQuery.type( showutc ) === "boolean";               },
+        applyFunc   : function( showutc ){ momentSimpleFormatSetFormat({ '_fcoo_showutc': showutc }); }, 
+        defaultValue: false,
+        callApply   : false
+    });
+
 
     //Also fire "datetimeformatchanged" when the language is changed
     window.fcoo.events.on('languagechanged', momentSimpleFormatSetFormat); 
@@ -23669,8 +23766,22 @@ moment.defineLocale('kl', {
             options = this._vfGetOptions(),
             value = format.convertBack( this.data( dataId_value ), options );
 
-        if (value !== undefined)
-            this.html( format.format( value, options ) );
+        if (value !== undefined){
+            value = format.format( value, options );
+
+            //Adjust value according to options
+            if (options.capitalize)
+                value = value.toUpperCase();
+
+            if (options.capitalizeFirstLetter)
+                value = value.charAt(0).toUpperCase() + value.slice(1);
+            
+            //prefix, postfix
+            value = (options.prefix ? options.prefix : '') + value + (options.postfix ? options.postfix : '');
+
+
+            this.html( value  );
+        }
     };
 
 

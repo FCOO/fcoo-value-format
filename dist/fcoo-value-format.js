@@ -217,6 +217,28 @@
     addMomentFormat( 'datetime_format_utc', function( m, options ){ return momentFormat( m, options, null,              true, true ); } );
     
 
+
+    /*************************************
+    formatId = relative_XX
+    *************************************/
+    function momentRelativeFormat( m, format ){
+        var options = {};
+        switch (format){
+          case 'H'  : options.relativeFormat = {now: true, days: false, hours: true, minutes: false }; break;
+          case 'HM' : options.relativeFormat = {now: true, days: false, hours: true, minutes: true  }; break;
+          case 'DHM': options.relativeFormat = {now: true, days: true,  hours: true, minutes: true  }; break;
+          default   : options.relativeFormat = {now: true, days: true,  hours: true, minutes: false }; 
+        }
+        return m.relativeFormat( options ); 
+    }
+                    
+    addMomentFormat( 'relative',     function( m ){ return momentRelativeFormat( m, 'DH'  ); } );
+    addMomentFormat( 'relative_dh',  function( m ){ return momentRelativeFormat( m, 'DH'  ); } ); 
+    addMomentFormat( 'relative_h',   function( m ){ return momentRelativeFormat( m, 'H'   ); } ); 
+    addMomentFormat( 'relative_hm',  function( m ){ return momentRelativeFormat( m, 'HM'  ); } ); 
+    addMomentFormat( 'relative_dhm', function( m ){ return momentRelativeFormat( m, 'DHM' ); } ); 
+
+    
     //Flush global-events
     setGlobalEvent( 'dummy' );
 

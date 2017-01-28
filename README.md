@@ -77,6 +77,10 @@ Some formats have additional options. They are all optional.
 | `datetime_format_utc` | `moment` | `"25. Jan 2017 13:00"` | |
 | `timezone` | `moment` | `"Europe/Copenhagen"` | |
 | `timezone_full` | `moment` | `"Europe/Copenhagen (UTC+01:00)"` | |
+| `relative` | `moment` | `"now+2d3h"` | |
+| `relative_h` | `moment` | `"now+51h"` | |
+| `relative_hm` | `moment` | `"now+51h10m"` | |
+| `relative_dhm` | `moment` | `"now+2d3h10m"` | |
 
 
 ### Formats for objects

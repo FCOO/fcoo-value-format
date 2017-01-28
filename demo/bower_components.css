@@ -114,6 +114,31 @@ html.no-lang2-en .show-for-lang2-en {
 
 
 ************************************************/
+/*
+Adds Modernizr-test:
+showrelative: Show also the date/time as relative to now
+showutc     : Show also the date/time in UTC
+timezoneutc : On when the selected time zone is UTC
+
+NOTE: To only show a element when the user has selected "showutc" AND the time zone isn't UTC: class="show-for-showutc hide-for-timezoneutc"
+*/
+html.showrelative .hide-for-showrelative {
+  display: none !important; }
+
+html.no-showrelative .show-for-showrelative {
+  display: none !important; }
+
+html.showutc .hide-for-showutc {
+  display: none !important; }
+
+html.no-showutc .show-for-showutc {
+  display: none !important; }
+
+html.timezoneutc .hide-for-timezoneutc {
+  display: none !important; }
+
+html.no-timezoneutc .show-for-timezoneutc {
+  display: none !important; }
 
 /* required styles */
 
