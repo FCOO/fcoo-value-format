@@ -127,7 +127,7 @@
     //Since changing language using moment.locale(...) do not change allready created moment-object 
     //the moment are saved as a Date-object or as moment and 're-constructed' when the display is updated
     function convertMoment( m, options ){ 
-        if (m === undefined)
+        if ((m === undefined) || (m == null))
             m = moment();          
         else
             if (jQuery.type( m ) === "string")
@@ -144,9 +144,6 @@
     function addMomentFormat(id, formatFunc ){
         addFormat({id: id, format: formatFunc, convert: convertMoment, convertBack: convertBackMoment });    
     }
-
-
-    //Date-format named date_XX_obj 
 
 
     /*************************************
