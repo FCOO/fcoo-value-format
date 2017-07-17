@@ -53,8 +53,8 @@
         return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
     }
 
-    function convertNumber( value ){
-        return $.isNumber( value ) ? value : parseFloat( value );
+    function convertNumber( value ){ console.log( value, $.isNumeric( value ) );
+        return $.isNumeric( value ) ? value : parseFloat( value );
     } 
 
     function formatNumber( value, options ){
