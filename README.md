@@ -47,8 +47,8 @@ http://FCOO.github.io/fcoo-value-format/demo/
 
 ## Formats
 The following formats are defined. 
-If the `id` of the format ends with `_obj` the element keeps the pointer to the object providing the values and can be dynamic updated.
 Some formats have additional options. They are all optional.
+
 
 | id | input | Output ex. | Options (id/default/description) |
 | :--: | :--: | --- | --- |
@@ -57,34 +57,36 @@ Some formats have additional options. They are all optional.
 | `lat` | `{leaflet latLng}` | `"55°07'11.9"N"`  |  | 
 | `lng` | `{leaflet latLng}` | `"12°59'13.2"E"`  |  | 
 | `latlng` | `{leaflet latLng}` | `"55°07'11.9"N 13°07'22.7"E"` | `separator` / `" "` / Text or html-code between the lat and lng. E.g. `"<br>"` |
-| `time` | `moment` | `"14:00"` | |
-| `hour` | `moment` | `"14"` | |
-| `time_utc` | `moment` | `"13:00"` | |
-| `hour_utc` | `moment` | `"13"` | |
-| `date` | `moment` | `"25. Jan 2017"` | |
-| `date_long` | `moment` | `"Wednesday, 25. January 2017"` | |
-| `date_short` | `moment` | `"25/01/17"` | |
-| `date_utc` | `moment` | `"25. Jan 2017"` | |
-| `date_long_utc` | `moment` | `"Wednesday, 25. January 2017"` | |
-| `date_short_utc` | `moment` | `"25/01/17"` | |
-| `date_format_utc` | `moment` | `"25. Jan 2017"` | |
-| `datetime` | `moment` | `"25. Jan 2017 14:00"` | |
-| `datetime_long` | `moment` | `"Wednesday, 25. January 2017 14:00"` | |
-| `datetime_short` | `moment` | `"25/01/17 14:00"` | |
-| `datetime_utc` | `moment` | `"25. Jan 2017 13:00"` | |
-| `datetime_long_utc` | `moment` | `"Wednesday, 25. January 2017 13:00"` | |
-| `datetime_short_utc` | `moment` | `"25/01/17 13:00"` | |
-| `datetime_format_utc` | `moment` | `"25. Jan 2017 13:00"` | |
-| `timezone` | `moment` | `"Europe/Copenhagen"` | |
-| `timezone_full` | `moment` | `"Europe/Copenhagen (UTC+01:00)"` | |
-| `relative` | `moment` | `"now+2d3h"` | |
-| `relative_h` | `moment` | `"now+51h"` | |
-| `relative_hm` | `moment` | `"now+51h10m"` | |
-| `relative_dhm` | `moment` | `"now+2d3h10m"` | |
+| `time` | `moment/string` | `"14:00"` | |
+| `hour` | `moment/string` | `"14"` | |
+| `time_utc` | `moment/string` | `"13:00"` | |
+| `hour_utc` | `moment/string` | `"13"` | |
+| `date` | `moment/string` | `"25. Jan 2017"` | |
+| `date_long` | `moment/string` | `"Wednesday, 25. January 2017"` | |
+| `date_short` | `moment/string` | `"25/01/17"` | |
+| `date_utc` | `moment/string` | `"25. Jan 2017"` | |
+| `date_long_utc` | `moment/string` | `"Wednesday, 25. January 2017"` | |
+| `date_short_utc` | `moment/string` | `"25/01/17"` | |
+| `date_format_utc` | `moment/string` | `"25. Jan 2017"` | |
+| `datetime` | `moment/string` | `"25. Jan 2017 14:00"` | |
+| `datetime_long` | `moment/string` | `"Wednesday, 25. January 2017 14:00"` | |
+| `datetime_short` | `moment/string` | `"25/01/17 14:00"` | |
+| `datetime_utc` | `moment/string` | `"25. Jan 2017 13:00"` | |
+| `datetime_long_utc` | `moment/string` | `"Wednesday, 25. January 2017 13:00"` | |
+| `datetime_short_utc` | `moment/string` | `"25/01/17 13:00"` | |
+| `datetime_format_utc` | `moment/string` | `"25. Jan 2017 13:00"` | |
+| `timezone` | `moment/string` | `"Europe/Copenhagen"` | |
+| `timezone_full` | `moment/string` | `"Europe/Copenhagen (UTC+01:00)"` | |
+| `relative` | `moment/string` | `"now+2d3h"` | |
+| `relative_h` | `moment/string` | `"now+51h"` | |
+| `relative_hm` | `moment/string` | `"now+51h10m"` | |
+| `relative_dhm` | `moment/string` | `"now+2d3h10m"` | |
 
+### Input to date- and time-formats
+All formats for time or date takes input as moment-object or as string with the time/date as ISO 8601 format
 
 ### Formats for objects
-If the "value" of the element is a object (`L.latLng` or `moment`) a copy of the object is saved and the original obk´ject can be altered without changing the contents of the element
+If the "value" of the element is a object (`L.latLng` or `moment`) a copy of the object is saved and the original object can be altered without changing the contents of the element
 
 ### Formats for `moment`
 - `_utc` : The displayed moment is in UTC

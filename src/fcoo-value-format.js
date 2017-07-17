@@ -53,7 +53,7 @@
         return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
     }
 
-    function convertNumber( value ){ console.log( value, $.isNumeric( value ) );
+    function convertNumber( value ){ 
         return $.isNumeric( value ) ? value : parseFloat( value );
     } 
 
@@ -127,6 +127,12 @@
     //Since changing language using moment.locale(...) do not change allready created moment-object 
     //the moment are saved as a Date-object or as moment and 're-constructed' when the display is updated
     function convertMoment( m, options ){ 
+        if (m === undefined)
+            m = moment();          
+        else
+            if (jQuery.type( m ) === "string")
+                m = moment( m );              
+
         return options.saveAsMoment ? m : m.toDate();     
     }
     
