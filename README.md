@@ -61,6 +61,8 @@ Some formats have additional options. They are all optional.
 | `hour` | `moment/string` | `"14"` | |
 | `time_utc` | `moment/string` | `"13:00"` | |
 | `hour_utc` | `moment/string` | `"13"` | |
+| `time_local` | `moment/string` | `"12:00"` | |
+| `hour_local` | `moment/string` | `"12"` | |
 | `date` | `moment/string` | `"25. Jan 2017"` | |
 | `date_long` | `moment/string` | `"Wednesday, 25. January 2017"` | |
 | `date_short` | `moment/string` | `"25/01/17"` | |
@@ -68,6 +70,10 @@ Some formats have additional options. They are all optional.
 | `date_long_utc` | `moment/string` | `"Wednesday, 25. January 2017"` | |
 | `date_short_utc` | `moment/string` | `"25/01/17"` | |
 | `date_format_utc` | `moment/string` | `"25. Jan 2017"` | |
+| `date_local` | `moment/string` | `"25. Jan 2017"` | |
+| `date_long_local` | `moment/string` | `"Wednesday, 25. January 2017"` | |
+| `date_short_local` | `moment/string` | `"25/01/17"` | |
+| `date_format_local` | `moment/string` | `"25. Jan 2017"` | |
 | `datetime` | `moment/string` | `"25. Jan 2017 14:00"` | |
 | `datetime_long` | `moment/string` | `"Wednesday, 25. January 2017 14:00"` | |
 | `datetime_short` | `moment/string` | `"25/01/17 14:00"` | |
@@ -75,6 +81,10 @@ Some formats have additional options. They are all optional.
 | `datetime_long_utc` | `moment/string` | `"Wednesday, 25. January 2017 13:00"` | |
 | `datetime_short_utc` | `moment/string` | `"25/01/17 13:00"` | |
 | `datetime_format_utc` | `moment/string` | `"25. Jan 2017 13:00"` | |
+| `datetime_local` | `moment/string` | `"25. Jan 2017 12:00"` | |
+| `datetime_long_local` | `moment/string` | `"Wednesday, 25. January 2017 12:00"` | |
+| `datetime_short_local` | `moment/string` | `"25/01/17 12:00"` | |
+| `datetime_format_local` | `moment/string` | `"25. Jan 2017 12:00"` | |
 | `timezone` | `moment/string` | `"Europe/Copenhagen"` | |
 | `timezone_full` | `moment/string` | `"Europe/Copenhagen (UTC+01:00)"` | |
 | `relative` | `moment/string` | `"now+2d3h"` | |
@@ -89,9 +99,10 @@ All formats for time or date takes input as moment-object or as string with the 
 If the "value" of the element is a object (`L.latLng` or `moment`) a copy of the object is saved and the original object can be altered without changing the contents of the element
 
 ### Formats for `moment`
-- `_utc` : The displayed moment is in UTC
-- `_short`: The moment is displayed in a short format
-- `_long`: The moment is displayed in a long format
+- `_utc`   : The displayed moment is in UTC
+- `_local` : The displayed moment is in local time
+- `_short` : The moment is displayed in a short format
+- `_long`  : The moment is displayed in a long format
 
 Add the option `saveAsMoment: true` (default = `false`) to save the original moment-object instead of a copy. Allows for dynamic updates (see below)
 

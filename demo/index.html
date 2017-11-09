@@ -138,9 +138,18 @@
 
 
         var idList = [  
-                        "time", "hour", "time_utc", "hour_utc", 
-                        "date", "date_long", "date_short", "date_utc", "date_long_utc", "date_short_utc", "date_format_utc", 
-                        "datetime", "datetime_long", "datetime_short", "datetime_utc", "datetime_long_utc", "datetime_short_utc", "datetime_format_utc", 
+                        "time",       "hour", 
+                        "time_utc",   "hour_utc", 
+                        "time_local", "hour_local",
+
+                        "date",       "date_long",       "date_short",      
+                        "date_utc",   "date_long_utc",   "date_short_utc",  
+                        "date_local", "date_long_local", "date_short_local",
+
+                        "datetime",       "datetime_long",       "datetime_short",      
+                        "datetime_utc",   "datetime_long_utc",   "datetime_short_utc",  
+                        "datetime_local", "datetime_long_local", "datetime_short_local",
+
                         "timezone", "timezone_full"
                     ],
             $table = $('#date_table');
@@ -148,7 +157,7 @@
         function addRow( formatId, options, name ){
             $('<tr></tr>').appendTo( $table )
                 .append( $('<td><code>'+(name || formatId) +'</code></td>') )
-                .append( $('<td></td>').append( $('<span></span>').vfFormat( formatId ).vfValue().vfOptions( options ) ) );
+                .append( $('<td></td>').append( $('<span></span>').vfFormat( formatId ).vfValue( moment() ).vfOptions( options ) ) );
         }
 
         for (var i=0; i<idList.length; i++ )
@@ -160,7 +169,7 @@
                     dateFormat     : {weekday: 'Full',  month: 'Full',  year: 'None' }, 
                     showTimezone   : 'FULL', 
                     inclParenthesis: true
-                }, 'SPECIAL VERSION' 
+                }, 'datetime_format (special version)' 
         );
    
 
