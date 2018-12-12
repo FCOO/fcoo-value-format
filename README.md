@@ -5,6 +5,7 @@
 [fcoo-language]: https://github.com/FCOO/fcoo-language
 [i18n]:http://i18next.com/
 [fcoo-number]:https://github.com/FCOO/fcoo-number
+[fcoo-unit]:https://github.com/FCOO/fcoo-unit
 [numeral.js]:http://numeraljs.com/
 [fcoo-latlng-format]:https://github.com/FCOO/fcoo-latlng-format
 [latlng-format]:https://github.com/FCOO/latlng-format
@@ -28,6 +29,7 @@ To set up the different formats, to provide interaction between the different *F
 - [fcoo-language]
 - [fcoo-moment]
 - [fcoo-latlng-format]
+- [fcoo-unit]
 - [fcoo-number]
 
 ### fcoo-value-format
@@ -45,15 +47,37 @@ If the user changes the format (e.g. date as `2017-01-30` instead of `30-01-2017
 http://FCOO.github.io/fcoo-value-format/demo/ 
 
 
+## Number with fixed number of digits
+
+To convert values of different magnitude to (almost) equal size a method is created
+
+    window.fcoo.number.numberFixedWidth( value, nrOfDigits, removeTrailingZeros )   //Convert value to a string where the number of digits in the string
+### Example
+    nrOfDigits == 4:
+    1.2345  => "1.234"
+    12.345  => "12.34"
+    123.45  => "123.4"
+    1234.5  => "1235"
+    12345   => "12345"
+    
+    removeTrailingZeros = false: 1.2 => "1.200"
+    removeTrailingZeros = true : 1.2 => "1.2"
+
+
 ## Formats
 The following formats are defined. 
 Some formats have additional options. They are all optional.
+
+For the formats `length`, `area`, and `speed` the output is 
 
 
 | id | input | Output ex. | Options (id/default/description) |
 | :--: | :--: | --- | --- |
 | `number`| `{number}` | `"1,000.123"` | `decimals` / `2` / Number of decimals. If the number is a integer no decimals are displayed<br>`format`, `"0,0[.]00"`, The [numeral.js] format used |
-| `distance`| `{number}` | `"123 nm"` | `unit` / `"m"`, `"m"`, `"km"`, or `"nm"` / The unit of the distance<br>`decimals`, `2`, See `number` |
+| `length`| `{number}` | `"12.3 nm"` | `removeTrailingZeros` / `true` / Convert input as meter to m, km or nm according to the setting `length` using `numberFixedWidth` |
+| `area`| `{number}` | `"1234 m2"` | `removeTrailingZeros` / `true` / Convert input as square meter to m2, km2 or nm2 according to the setting `area` using `numberFixedWidth` |
+| `speed`| `{number}` | `"12.3 km/h"` | `removeTrailingZeros` / `true` / Convert input as speed (m/s) to m/s, km/h or knots according to the setting `speed` using `numberFixedWidth` |
+| `direction`| `{number}` | `"380 rad"` | Convert input as direction (0-260) to direction or radian (0-400) according to the setting `direction` |
 | `lat` | `{leaflet latLng}` | `"55°07'11.9"N"`  |  | 
 | `lng` | `{leaflet latLng}` | `"12°59'13.2"E"`  |  | 
 | `latlng` | `{leaflet latLng}` | `"55°07'11.9"N 13°07'22.7"E"` | `separator` / `" "` / Text or html-code between the lat and lng. E.g. `"<br>"` |
@@ -64,24 +88,30 @@ Some formats have additional options. They are all optional.
 | `time_local` | `moment/string` | `"12:00"` | |
 | `hour_local` | `moment/string` | `"12"` | |
 | `date` | `moment/string` | `"25. Jan 2017"` | |
+| `date_weekday` | `moment/string` | `"Wednesday, 25. Jan 2017"` | |
 | `date_long` | `moment/string` | `"Wednesday, 25. January 2017"` | |
 | `date_short` | `moment/string` | `"25/01/17"` | |
 | `date_utc` | `moment/string` | `"25. Jan 2017"` | |
+| `date_weekday_utc` | `moment/string` | `"Wednesday, 25. Jan 2017"` | |
 | `date_long_utc` | `moment/string` | `"Wednesday, 25. January 2017"` | |
 | `date_short_utc` | `moment/string` | `"25/01/17"` | |
 | `date_format_utc` | `moment/string` | `"25. Jan 2017"` | |
 | `date_local` | `moment/string` | `"25. Jan 2017"` | |
+| `date_weekday_local` | `moment/string` | `"Wednesday, 25. Jan 2017"` | |
 | `date_long_local` | `moment/string` | `"Wednesday, 25. January 2017"` | |
 | `date_short_local` | `moment/string` | `"25/01/17"` | |
 | `date_format_local` | `moment/string` | `"25. Jan 2017"` | |
 | `datetime` | `moment/string` | `"25. Jan 2017 14:00"` | |
+| `datetime_weekday` | `moment/string` | `"Wednesday, 25. Jan 2017 14:00"` | |
 | `datetime_long` | `moment/string` | `"Wednesday, 25. January 2017 14:00"` | |
 | `datetime_short` | `moment/string` | `"25/01/17 14:00"` | |
 | `datetime_utc` | `moment/string` | `"25. Jan 2017 13:00"` | |
+| `datetime_weekday_utc` | `moment/string` | `"Wednesday, 25. Jan 2017 13:00"` | |
 | `datetime_long_utc` | `moment/string` | `"Wednesday, 25. January 2017 13:00"` | |
 | `datetime_short_utc` | `moment/string` | `"25/01/17 13:00"` | |
 | `datetime_format_utc` | `moment/string` | `"25. Jan 2017 13:00"` | |
 | `datetime_local` | `moment/string` | `"25. Jan 2017 12:00"` | |
+| `datetime_weekday_local` | `moment/string` | `"Wednesday, 25. Jan 2017 12:00"` | |
 | `datetime_long_local` | `moment/string` | `"Wednesday, 25. January 2017 12:00"` | |
 | `datetime_short_local` | `moment/string` | `"25/01/17 12:00"` | |
 | `datetime_format_local` | `moment/string` | `"25. Jan 2017 12:00"` | |

@@ -17,10 +17,11 @@
 
     /***************************************************************************
     Updating formats on global events
-    languagechanged      : the language
-    datetimeformatchanged: the format of dates, time (13:00 or 01:00pm), the timezone, show/hide utc
-    numberformatchanged  : the format of numbers (1.000,123 or 1,000.123)
-    latlngformatchanged  : the format of posiitons/lat-lng
+    window.fcoo.events.LANGUAGECHANGED       = 'languagechanged'      : the language
+    window.fcoo.events.DATETIMEFORMATCHANGED = 'datetimeformatchanged': the format of dates, time (13:00 or 01:00pm), the timezone, show/hide utc
+    window.fcoo.events.LATLNGFORMATCHANGED   = 'latlngformatchanged'  : the format of posiitons/lat-lng
+    window.fcoo.events.NUMBERFORMATCHANGED   = 'numberformatchanged'  : the format of numbers (1.000,123 or 1,000.123)
+    window.fcoo.events.UNITCHANGED           = `unitchanged`          : the unit use to display variables. Eq. length changed from `km` to `nm`
     ***************************************************************************/
     var updateGlobalEvent = '';
     var formatIdList = [];
@@ -41,17 +42,19 @@
 
 
     /*************************************
-    NUMBER AND DISTANCE
+    **************************************
+    NUMBER FORMAT
+    **************************************
     *************************************/
-    setGlobalEvent( 'numberformatchanged' );
+    setGlobalEvent( window.fcoo.events.NUMBERFORMATCHANGED );
 
     function getDecimals( options, defaultDecimals ){
         return options.decimals !== undefined ? parseInt(options.decimals) : defaultDecimals !== undefined ? defaultDecimals : 2;
     }
 
-    function round(value, decimals) {
-        return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
-    }
+    //function round(value, decimals) {
+    //    return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+    //}
 
     function convertNumber( value ){
         return $.isNumeric( value ) ? value : parseFloat( value );
@@ -73,28 +76,109 @@
     });
 
     /*************************************
-    formatId = distance
+    **************************************
+    UNIT (length, area, speed, ddirection)
+    **************************************
     *************************************/
-    addFormat({
-        id     : 'distance',
-        format : function( value, options ){
-            var factor = 1,
-                unitStr = ' m';
-            switch (options.unit){
-              case 'nm': factor = 1862; unitStr = ' nm';break;
-              case 'km': factor = 1000; unitStr = ' km';break;
-            }
+    setGlobalEvent( window.fcoo.events.UNITCHANGED );
 
-            value = round( value/factor, getDecimals( options ) );
-            return formatNumber( value, options) + unitStr;
-        },
-        convert: convertNumber
+    //length
+    addFormat({
+        id    : 'length',
+        format: function( value, options ){
+            var nrOfDigits = 3,
+                removeTrailingZeros = options && (typeof options.removeTrailingZeros == 'boolean') ? options.removeTrailingZeros : true,
+                unitStr = 'm';
+
+            if (ns.settings.get('length') == ns.unit.NAUTICAL)
+                unitStr = 'nm';
+            else {
+                //Convert from m to km if >= 1000m
+                if (Math.abs(value) >= 1000){
+                    value = value / 1000;
+                    unitStr = 'km';
+                }
+                else
+                    nrOfDigits = 0;
+            }
+            return ns.number.numberFixedWidth(
+                ns.unit.getLength( value ),
+                nrOfDigits,
+                removeTrailingZeros
+            ) + '&nbsp;' + unitStr;
+
+        }
     });
 
+    //area
+    addFormat({
+        id    : 'area',
+        format: function( value, options ){
+            var nrOfDigits = 3,
+                removeTrailingZeros = options && (typeof options.removeTrailingZeros == 'boolean') ? options.removeTrailingZeros : true,
+                unitStr = 'm';
+
+            if (ns.settings.get('area') == ns.unit.NAUTICAL)
+                unitStr = 'nm';
+            else {
+                //Convert from m2 to km2 if >= 10000m2
+                if (Math.abs(value) >= 10000){
+                    value = value / (1000*1000);
+                    unitStr = 'km';
+                }
+                else
+                    nrOfDigits = 0;
+            }
+            return ns.number.numberFixedWidth(
+                ns.unit.getArea( value ),
+                nrOfDigits,
+                removeTrailingZeros
+            ) + '&nbsp;' + unitStr + '<sup>2</sup>';
+
+        }
+    });
+
+    //direction
+    addFormat({
+        id    : 'direction',
+        format: function( value, options ){
+            var unitStr;
+            options = $.extend({ decimals: 0}, options || {});
+            switch (ns.settings.get('direction')){
+                case ns.unit.DEGREE : unitStr = '<sup>o</sup>'; break;
+                case ns.unit.GRADIAN: unitStr = '&nbsp;rad'; break; //or <sup>c</sup> or <sup>R</sup>
+            }
+
+            return formatNumber(ns.unit.getDirection( value ), options ) +  unitStr;
+        }
+    });
+
+
+
+    //speed - also updated on language changed
+    setGlobalEvent( window.fcoo.events.UNITCHANGED + ' ' + window.fcoo.events.LANGUAGECHANGED );
+    addFormat({
+        id    : 'speed',
+        format: function( value, options ){
+            var removeTrailingZeros = options && (typeof options == 'boolean') ? options : true,
+                unitStr;
+            switch (ns.settings.get('speed')){
+                case ns.unit.METRIC : unitStr = 'm/s'; break;
+                case ns.unit.METRIC2: unitStr = window.i18next.sentence( {da:'km/t', en:'km/h'}); break;
+                case ns.unit.NAUTICAL: unitStr = window.i18next.sentence( {da:'knob', en:'knots'}); break;
+            }
+
+            return ns.number.numberFixedWidth(ns.unit.getSpeed( value ), 3, removeTrailingZeros) + '&nbsp;' + unitStr;
+        }
+    });
+
+
     /*************************************
+    **************************************
     LATLNG
+    **************************************
     *************************************/
-    setGlobalEvent( 'latlngformatchanged' );
+    setGlobalEvent( window.fcoo.events.LATLNGFORMATCHANGED );
 
     function convertLatLng( latLng ){
         return L.latLng( {lat:latLng.lat, lng:latLng.lng} );
@@ -120,9 +204,11 @@
 
 
     /*************************************
+    **************************************
     DATE AND TIME (MOMENT)
+    **************************************
     *************************************/
-    setGlobalEvent( 'datetimeformatchanged' );
+    setGlobalEvent( window.fcoo.events.DATETIMEFORMATCHANGED );
 
     //Since changing language using moment.locale(...) do not change allready created moment-object
     //the moment are saved as a Date-object or as moment and 're-constructed' when the display is updated
@@ -203,39 +289,46 @@
     }
 
     //Format: 'FULL', 'SHORT', 'DIGITAL', 'NONE'
-    var dateDefaultFormat = { weekday: 'None',  month: 'Short',   year: 'Full' },
-        dateLongFormat    = { weekday: 'Full',  month: 'Full',    year: 'Full' },
+    var dateDefaultFormat = { weekday: 'None',  month: 'Short',   year: 'Full'  },
+        dateWeekdayFormat = { weekday: 'Full',  month: 'Short',   year: 'Full'  },
+        dateLongFormat    = { weekday: 'Full',  month: 'Full',    year: 'Full'  },
         dateShortFormat   = { weekday: 'None',  month: 'Digital', year: 'Short' };
 
-    addMomentFormat( 'date',                  function( m, options ){ return momentFormat( m, options, dateDefaultFormat ); } );
-    addMomentFormat( 'date_long',             function( m, options ){ return momentFormat( m, options, dateLongFormat    ); } );
-    addMomentFormat( 'date_short',            function( m, options ){ return momentFormat( m, options, dateShortFormat   ); } );
-    addMomentFormat( 'date_format',           function( m, options ){ return momentFormat( m, options                    ); } );
+    addMomentFormat( 'date',                    function( m, options ){ return momentFormat( m, options, dateDefaultFormat ); } );
+    addMomentFormat( 'date_weekday',            function( m, options ){ return momentFormat( m, options, dateWeekdayFormat ); } );
+    addMomentFormat( 'date_long',               function( m, options ){ return momentFormat( m, options, dateLongFormat    ); } );
+    addMomentFormat( 'date_short',              function( m, options ){ return momentFormat( m, options, dateShortFormat   ); } );
+    addMomentFormat( 'date_format',             function( m, options ){ return momentFormat( m, options                    ); } );
 
-    addMomentFormat( 'date_utc',              function( m, options ){ return momentFormat( m, options, dateDefaultFormat, false, 'utc' ); } );
-    addMomentFormat( 'date_long_utc',         function( m, options ){ return momentFormat( m, options, dateLongFormat,    false, 'utc' ); } );
-    addMomentFormat( 'date_short_utc',        function( m, options ){ return momentFormat( m, options, dateShortFormat,   false, 'utc' ); } );
-    addMomentFormat( 'date_format_utc',       function( m, options ){ return momentFormat( m, options, null,              false, 'utc' ); } );
+    addMomentFormat( 'date_utc',                function( m, options ){ return momentFormat( m, options, dateDefaultFormat, false, 'utc' ); } );
+    addMomentFormat( 'date_weekday_utc',        function( m, options ){ return momentFormat( m, options, dateWeekdayFormat, false, 'utc' ); } );
+    addMomentFormat( 'date_long_utc',           function( m, options ){ return momentFormat( m, options, dateLongFormat,    false, 'utc' ); } );
+    addMomentFormat( 'date_short_utc',          function( m, options ){ return momentFormat( m, options, dateShortFormat,   false, 'utc' ); } );
+    addMomentFormat( 'date_format_utc',         function( m, options ){ return momentFormat( m, options, null,              false, 'utc' ); } );
 
-    addMomentFormat( 'date_local',            function( m, options ){ return momentFormat( m, options, dateDefaultFormat, false, 'local' ); } );
-    addMomentFormat( 'date_long_local',       function( m, options ){ return momentFormat( m, options, dateLongFormat,    false, 'local' ); } );
-    addMomentFormat( 'date_short_local',      function( m, options ){ return momentFormat( m, options, dateShortFormat,   false, 'local' ); } );
-    addMomentFormat( 'date_format_local',     function( m, options ){ return momentFormat( m, options, null,              false, 'local' ); } );
+    addMomentFormat( 'date_local',              function( m, options ){ return momentFormat( m, options, dateDefaultFormat, false, 'local' ); } );
+    addMomentFormat( 'date_weekday_local',      function( m, options ){ return momentFormat( m, options, dateWeekdayFormat, false, 'local' ); } );
+    addMomentFormat( 'date_long_local',         function( m, options ){ return momentFormat( m, options, dateLongFormat,    false, 'local' ); } );
+    addMomentFormat( 'date_short_local',        function( m, options ){ return momentFormat( m, options, dateShortFormat,   false, 'local' ); } );
+    addMomentFormat( 'date_format_local',       function( m, options ){ return momentFormat( m, options, null,              false, 'local' ); } );
 
-    addMomentFormat( 'datetime',              function( m, options ){ return momentFormat( m, options, dateDefaultFormat, true       ); } );
-    addMomentFormat( 'datetime_long',         function( m, options ){ return momentFormat( m, options, dateLongFormat,    true       ); } );
-    addMomentFormat( 'datetime_short',        function( m, options ){ return momentFormat( m, options, dateShortFormat,   true       ); } );
-    addMomentFormat( 'datetime_format',       function( m, options ){ return momentFormat( m, options, null,              true       ); } );
+    addMomentFormat( 'datetime',                function( m, options ){ return momentFormat( m, options, dateDefaultFormat, true       ); } );
+    addMomentFormat( 'datetime_weekday',        function( m, options ){ return momentFormat( m, options, dateWeekdayFormat, true       ); } );
+    addMomentFormat( 'datetime_long',           function( m, options ){ return momentFormat( m, options, dateLongFormat,    true       ); } );
+    addMomentFormat( 'datetime_short',          function( m, options ){ return momentFormat( m, options, dateShortFormat,   true       ); } );
+    addMomentFormat( 'datetime_format',         function( m, options ){ return momentFormat( m, options, null,              true       ); } );
 
-    addMomentFormat( 'datetime_utc',          function( m, options ){ return momentFormat( m, options, dateDefaultFormat, true, 'utc' ); } );
-    addMomentFormat( 'datetime_long_utc',     function( m, options ){ return momentFormat( m, options, dateLongFormat,    true, 'utc' ); } );
-    addMomentFormat( 'datetime_short_utc',    function( m, options ){ return momentFormat( m, options, dateShortFormat,   true, 'utc' ); } );
-    addMomentFormat( 'datetime_format_utc',   function( m, options ){ return momentFormat( m, options, null,              true, 'utc' ); } );
+    addMomentFormat( 'datetime_utc',            function( m, options ){ return momentFormat( m, options, dateDefaultFormat, true, 'utc' ); } );
+    addMomentFormat( 'datetime_weekday_utc',    function( m, options ){ return momentFormat( m, options, dateWeekdayFormat, true, 'utc' ); } );
+    addMomentFormat( 'datetime_long_utc',       function( m, options ){ return momentFormat( m, options, dateLongFormat,    true, 'utc' ); } );
+    addMomentFormat( 'datetime_short_utc',      function( m, options ){ return momentFormat( m, options, dateShortFormat,   true, 'utc' ); } );
+    addMomentFormat( 'datetime_format_utc',     function( m, options ){ return momentFormat( m, options, null,              true, 'utc' ); } );
 
-    addMomentFormat( 'datetime_local',        function( m, options ){ return momentFormat( m, options, dateDefaultFormat, true, 'local' ); } );
-    addMomentFormat( 'datetime_long_local',   function( m, options ){ return momentFormat( m, options, dateLongFormat,    true, 'local' ); } );
-    addMomentFormat( 'datetime_short_local',  function( m, options ){ return momentFormat( m, options, dateShortFormat,   true, 'local' ); } );
-    addMomentFormat( 'datetime_format_local', function( m, options ){ return momentFormat( m, options, null,              true, 'local' ); } );
+    addMomentFormat( 'datetime_local',          function( m, options ){ return momentFormat( m, options, dateDefaultFormat, true, 'local' ); } );
+    addMomentFormat( 'datetime_weekday_local',  function( m, options ){ return momentFormat( m, options, dateWeekdayFormat, true, 'local' ); } );
+    addMomentFormat( 'datetime_long_local',     function( m, options ){ return momentFormat( m, options, dateLongFormat,    true, 'local' ); } );
+    addMomentFormat( 'datetime_short_local',    function( m, options ){ return momentFormat( m, options, dateShortFormat,   true, 'local' ); } );
+    addMomentFormat( 'datetime_format_local',   function( m, options ){ return momentFormat( m, options, null,              true, 'local' ); } );
 
 
     /*************************************
