@@ -134,8 +134,6 @@ If the "value" of the element is a object (`L.latLng` or `moment`) a copy of the
 - `_short` : The moment is displayed in a short format
 - `_long`  : The moment is displayed in a long format
 
-Add the option `saveAsMoment: true` (default = `false`) to save the original moment-object instead of a copy. Allows for dynamic updates (see below)
-
 
 ## Usage
 

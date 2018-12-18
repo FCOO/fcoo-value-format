@@ -180,27 +180,29 @@
     *************************************/
     setGlobalEvent( window.fcoo.events.LATLNGFORMATCHANGED );
 
-    function convertLatLng( latLng ){
-        return L.latLng( {lat:latLng.lat, lng:latLng.lng} );
-    }
+    //convertLatLng - from LatLng to string
+    function convertLatLng( latLng ){ return [latLng.lat, latLng.lng]; }
+
+    //convertLatLngBack - convert from array to LatLng
+    function convertLatLngBack( latLngArray ){ return latLngArray ? L.latLng(latLngArray) : null;  }
 
     /*************************************
     formatId = lat, lng
     *************************************/
-    addFormat({ id: 'lat', format : function( latLng ){ return latLng.formatLat(); }, convert: convertLatLng });
-    addFormat({ id: 'lng', format : function( latLng ){ return latLng.formatLng(); }, convert: convertLatLng });
+    addFormat({ id: 'lat', format : function( latLng ){ return latLng ? latLng.formatLat() : ''; }, convert: convertLatLng, convertBack: convertLatLngBack });
+    addFormat({ id: 'lng', format : function( latLng ){ return latLng ? latLng.formatLng() : ''; }, convert: convertLatLng, convertBack: convertLatLngBack });
 
     /*************************************
     formatId = latlng
     *************************************/
     addFormat({
-        id: 'latlng',
-        format : function( latLng, options ){
-            return latLng.format().join(options.separator ? options.separator : '&nbsp;');
+        id    : 'latlng',
+        format: function( latLng, options ){
+            return latLng ? latLng.format().join(options.separator ? options.separator : '&nbsp;') : '';
          },
-         convert: convertLatLng
+         convert    : convertLatLng,
+         convertBack: convertLatLngBack
      });
-
 
 
     /*************************************
@@ -210,21 +212,12 @@
     *************************************/
     setGlobalEvent( window.fcoo.events.DATETIMEFORMATCHANGED );
 
-    //Since changing language using moment.locale(...) do not change allready created moment-object
-    //the moment are saved as a Date-object or as moment and 're-constructed' when the display is updated
-    function convertMoment( m, options ){
-        if ((m === undefined) || (m == null))
-            m = moment();
-        else
-            if (jQuery.type( m ) === "string")
-                m = moment( m );
-
-        return options.saveAsMoment ? m : m.toDate();
+    function convertMoment( momentOrStr ){
+        return jQuery.type( momentOrStr ) == "string" ? momentOrStr : momentOrStr.format();
     }
 
-    function convertBackMoment( m, options ){
-        m = m ? m : moment();
-        return moment( options.saveAsMoment ? m.toDate() : m );
+    function convertBackMoment( str ){
+        return moment(str);
     }
 
     function addMomentFormat(id, formatFunc ){

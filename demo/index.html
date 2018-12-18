@@ -31,8 +31,8 @@
     <br>
     <div data-vf-format="number" data-vf-value="1000.123"></div>
     <div data-vf-format="number" data-vf-value="1234"></div>
-    <div data-vf-format="number" data-vf-value="1000.123456789" data-vf-options="{'decimals':'5'}"></div>
-    <div data-vf-format="number" data-vf-value="1000.123456789" data-vf-options="{'decimals':0}"></div>
+    <div data-vf-format="number" data-vf-value="1000.123456789" data-vf-options='{"decimals":5}'></div>
+    <div data-vf-format="number" data-vf-value="1000.123456789" data-vf-options='{"decimals":0}'></div>
 
     <hr>
     <h2>unit</h2>
@@ -54,7 +54,7 @@
 
     <span>direction 2.3456 =>&nbsp;</span><span data-vf-format="direction" data-vf-value="2.3456"></span><br>
     <span>direction 110.00123 =>&nbsp;</span><span data-vf-format="direction" data-vf-value="110.00123"></span><br>
-    <span>direction 212.388813 (with 3 decimals) =>&nbsp;</span><span data-vf-format="direction" data-vf-value="212.388813" data-vf-options="{'decimals':3}"></span><br>
+    <span>direction 212.388813 (with 3 decimals) =>&nbsp;</span><span data-vf-format="direction" data-vf-value="212.388813" data-vf-options='{"decimals":3}'></span><br>
 
 
     <!-- <div data-vf-format="distance" data-vf-value="1000.123"></div>
@@ -67,8 +67,8 @@
     <select id="latlngFormat"></select>
     <br>
     <br>
-    <div id="lat" data-vf-format="lat"></div>
-    <div id="lng" data-vf-format="lng"></div>
+    <div id="lat"    data-vf-format="lat"></div>
+    <div id="lng"    data-vf-format="lng"></div>
     <div id="latlng" data-vf-format="latlng"></div>
 
     <hr>
@@ -82,12 +82,12 @@
     <tr><th>formatId</th><th>Result</th></tr></table>
 
     <hr>
-    <h2>date with saveAsMoment</h2>
-    <div class="timedate_obj" data-vf-format="datetime_long" data-vf-options="{'saveAsMoment':true}"></div>
-    <div class="timedate_obj" data-vf-format="relative" data-vf-options="{'saveAsMoment':true}"></div>
-    <div class="timedate_obj" data-vf-format="relative_h" data-vf-options="{'saveAsMoment':true}"></div>
-    <div class="timedate_obj" data-vf-format="relative_hm" data-vf-options="{'saveAsMoment':true}"></div>
-    <div class="timedate_obj" data-vf-format="relative_dhm" data-vf-options="{'saveAsMoment':true}"></div>
+    <h2>Relative date</h2>
+    <div class="timedate_obj" data-vf-format="datetime_long"></div>
+    <div class="timedate_obj" data-vf-format="relative"></div>
+    <div class="timedate_obj" data-vf-format="relative_h"></div>
+    <div class="timedate_obj" data-vf-format="relative_hm"></div>
+    <div class="timedate_obj" data-vf-format="relative_dhm"></div>
 
     <button id="update_moment">Click to add 63 min</button>
 
@@ -228,7 +228,7 @@
         $('.timedate_obj').vfValue(test_moment);
         $('#update_moment').on('click', function(){
             test_moment.add(63, 'm');
-            $('.timedate_obj').vfUpdate();
+            $('.timedate_obj').vfValue(test_moment);
         });
 
     </script>
