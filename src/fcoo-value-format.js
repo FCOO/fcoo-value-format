@@ -282,46 +282,53 @@
     }
 
     //Format: 'FULL', 'SHORT', 'DIGITAL', 'NONE'
-    var dateDefaultFormat = { weekday: 'None',  month: 'Short',   year: 'Full'  },
-        dateWeekdayFormat = { weekday: 'Full',  month: 'Short',   year: 'Full'  },
-        dateLongFormat    = { weekday: 'Full',  month: 'Full',    year: 'Full'  },
-        dateShortFormat   = { weekday: 'None',  month: 'Digital', year: 'Short' };
+    var dateDefaultFormat     = { weekday: 'None',  month: 'Short',   year: 'Full'  },
+        dateWeekdayFormat     = { weekday: 'Full',  month: 'Short',   year: 'Full'  },
+        dateLongFormat        = { weekday: 'None',  month: 'Full',    year: 'Full'  },
+        dateLongWeekdayFormat = { weekday: 'Full',  month: 'Full',    year: 'Full'  },
+        dateShortFormat       = { weekday: 'None',  month: 'Digital', year: 'Short' };
 
-    addMomentFormat( 'date',                    function( m, options ){ return momentFormat( m, options, dateDefaultFormat ); } );
-    addMomentFormat( 'date_weekday',            function( m, options ){ return momentFormat( m, options, dateWeekdayFormat ); } );
-    addMomentFormat( 'date_long',               function( m, options ){ return momentFormat( m, options, dateLongFormat    ); } );
-    addMomentFormat( 'date_short',              function( m, options ){ return momentFormat( m, options, dateShortFormat   ); } );
-    addMomentFormat( 'date_format',             function( m, options ){ return momentFormat( m, options                    ); } );
+    addMomentFormat( 'date',                    function( m, options ){ return momentFormat( m, options, dateDefaultFormat     ); } );
+    addMomentFormat( 'date_weekday',            function( m, options ){ return momentFormat( m, options, dateWeekdayFormat     ); } );
+    addMomentFormat( 'date_long',               function( m, options ){ return momentFormat( m, options, dateLongFormat        ); } );
+    addMomentFormat( 'date_long_weekday',       function( m, options ){ return momentFormat( m, options, dateLongWeekdayFormat ); } );
+    addMomentFormat( 'date_short',              function( m, options ){ return momentFormat( m, options, dateShortFormat       ); } );
+    addMomentFormat( 'date_format',             function( m, options ){ return momentFormat( m, options                        ); } );
 
-    addMomentFormat( 'date_utc',                function( m, options ){ return momentFormat( m, options, dateDefaultFormat, false, 'utc' ); } );
-    addMomentFormat( 'date_weekday_utc',        function( m, options ){ return momentFormat( m, options, dateWeekdayFormat, false, 'utc' ); } );
-    addMomentFormat( 'date_long_utc',           function( m, options ){ return momentFormat( m, options, dateLongFormat,    false, 'utc' ); } );
-    addMomentFormat( 'date_short_utc',          function( m, options ){ return momentFormat( m, options, dateShortFormat,   false, 'utc' ); } );
-    addMomentFormat( 'date_format_utc',         function( m, options ){ return momentFormat( m, options, null,              false, 'utc' ); } );
+    addMomentFormat( 'date_utc',                function( m, options ){ return momentFormat( m, options, dateDefaultFormat,     false, 'utc' ); } );
+    addMomentFormat( 'date_weekday_utc',        function( m, options ){ return momentFormat( m, options, dateWeekdayFormat,     false, 'utc' ); } );
+    addMomentFormat( 'date_long_utc',           function( m, options ){ return momentFormat( m, options, dateLongFormat,        false, 'utc' ); } );
+    addMomentFormat( 'date_long_weekday_utc',   function( m, options ){ return momentFormat( m, options, dateLongWeekdayFormat, false, 'utc' ); } );
+    addMomentFormat( 'date_short_utc',          function( m, options ){ return momentFormat( m, options, dateShortFormat,       false, 'utc' ); } );
+    addMomentFormat( 'date_format_utc',         function( m, options ){ return momentFormat( m, options, null,                  false, 'utc' ); } );
 
-    addMomentFormat( 'date_local',              function( m, options ){ return momentFormat( m, options, dateDefaultFormat, false, 'local' ); } );
-    addMomentFormat( 'date_weekday_local',      function( m, options ){ return momentFormat( m, options, dateWeekdayFormat, false, 'local' ); } );
-    addMomentFormat( 'date_long_local',         function( m, options ){ return momentFormat( m, options, dateLongFormat,    false, 'local' ); } );
-    addMomentFormat( 'date_short_local',        function( m, options ){ return momentFormat( m, options, dateShortFormat,   false, 'local' ); } );
-    addMomentFormat( 'date_format_local',       function( m, options ){ return momentFormat( m, options, null,              false, 'local' ); } );
+    addMomentFormat( 'date_local',              function( m, options ){ return momentFormat( m, options, dateDefaultFormat,     false, 'local' ); } );
+    addMomentFormat( 'date_weekday_local',      function( m, options ){ return momentFormat( m, options, dateWeekdayFormat,     false, 'local' ); } );
+    addMomentFormat( 'date_long_local',         function( m, options ){ return momentFormat( m, options, dateLongFormat,        false, 'local' ); } );
+    addMomentFormat( 'date_long_weekday_local', function( m, options ){ return momentFormat( m, options, dateLongWeekdayFormat, false, 'local' ); } );
+    addMomentFormat( 'date_short_local',        function( m, options ){ return momentFormat( m, options, dateShortFormat,       false, 'local' ); } );
+    addMomentFormat( 'date_format_local',       function( m, options ){ return momentFormat( m, options, null,                  false, 'local' ); } );
 
-    addMomentFormat( 'datetime',                function( m, options ){ return momentFormat( m, options, dateDefaultFormat, true       ); } );
-    addMomentFormat( 'datetime_weekday',        function( m, options ){ return momentFormat( m, options, dateWeekdayFormat, true       ); } );
-    addMomentFormat( 'datetime_long',           function( m, options ){ return momentFormat( m, options, dateLongFormat,    true       ); } );
-    addMomentFormat( 'datetime_short',          function( m, options ){ return momentFormat( m, options, dateShortFormat,   true       ); } );
-    addMomentFormat( 'datetime_format',         function( m, options ){ return momentFormat( m, options, null,              true       ); } );
+    addMomentFormat( 'datetime',                function( m, options ){ return momentFormat( m, options, dateDefaultFormat,     true       ); } );
+    addMomentFormat( 'datetime_weekday',        function( m, options ){ return momentFormat( m, options, dateWeekdayFormat,     true       ); } );
+    addMomentFormat( 'datetime_long',           function( m, options ){ return momentFormat( m, options, dateLongFormat,        true       ); } );
+    addMomentFormat( 'datetime_long_weekday',   function( m, options ){ return momentFormat( m, options, dateLongWeekdayFormat, true       ); } );
+    addMomentFormat( 'datetime_short',          function( m, options ){ return momentFormat( m, options, dateShortFormat,       true       ); } );
+    addMomentFormat( 'datetime_format',         function( m, options ){ return momentFormat( m, options, null,                  true       ); } );
 
-    addMomentFormat( 'datetime_utc',            function( m, options ){ return momentFormat( m, options, dateDefaultFormat, true, 'utc' ); } );
-    addMomentFormat( 'datetime_weekday_utc',    function( m, options ){ return momentFormat( m, options, dateWeekdayFormat, true, 'utc' ); } );
-    addMomentFormat( 'datetime_long_utc',       function( m, options ){ return momentFormat( m, options, dateLongFormat,    true, 'utc' ); } );
-    addMomentFormat( 'datetime_short_utc',      function( m, options ){ return momentFormat( m, options, dateShortFormat,   true, 'utc' ); } );
-    addMomentFormat( 'datetime_format_utc',     function( m, options ){ return momentFormat( m, options, null,              true, 'utc' ); } );
+    addMomentFormat( 'datetime_utc',              function( m, options ){ return momentFormat( m, options, dateDefaultFormat,     true, 'utc' ); } );
+    addMomentFormat( 'datetime_weekday_utc',      function( m, options ){ return momentFormat( m, options, dateWeekdayFormat,     true, 'utc' ); } );
+    addMomentFormat( 'datetime_long_utc',         function( m, options ){ return momentFormat( m, options, dateLongFormat,        true, 'utc' ); } );
+    addMomentFormat( 'datetime_long_weekday_utc', function( m, options ){ return momentFormat( m, options, dateLongWeekdayFormat, true, 'utc' ); } );
+    addMomentFormat( 'datetime_short_utc',        function( m, options ){ return momentFormat( m, options, dateShortFormat,       true, 'utc' ); } );
+    addMomentFormat( 'datetime_format_utc',       function( m, options ){ return momentFormat( m, options, null,                  true, 'utc' ); } );
 
-    addMomentFormat( 'datetime_local',          function( m, options ){ return momentFormat( m, options, dateDefaultFormat, true, 'local' ); } );
-    addMomentFormat( 'datetime_weekday_local',  function( m, options ){ return momentFormat( m, options, dateWeekdayFormat, true, 'local' ); } );
-    addMomentFormat( 'datetime_long_local',     function( m, options ){ return momentFormat( m, options, dateLongFormat,    true, 'local' ); } );
-    addMomentFormat( 'datetime_short_local',    function( m, options ){ return momentFormat( m, options, dateShortFormat,   true, 'local' ); } );
-    addMomentFormat( 'datetime_format_local',   function( m, options ){ return momentFormat( m, options, null,              true, 'local' ); } );
+    addMomentFormat( 'datetime_local',              function( m, options ){ return momentFormat( m, options, dateDefaultFormat,     true, 'local' ); } );
+    addMomentFormat( 'datetime_weekday_local',      function( m, options ){ return momentFormat( m, options, dateWeekdayFormat,     true, 'local' ); } );
+    addMomentFormat( 'datetime_long_local',         function( m, options ){ return momentFormat( m, options, dateLongFormat,        true, 'local' ); } );
+    addMomentFormat( 'datetime_long_weekday_local', function( m, options ){ return momentFormat( m, options, dateLongWeekdayFormat, true, 'local' ); } );
+    addMomentFormat( 'datetime_short_local',        function( m, options ){ return momentFormat( m, options, dateShortFormat,       true, 'local' ); } );
+    addMomentFormat( 'datetime_format_local',       function( m, options ){ return momentFormat( m, options, null,                  true, 'local' ); } );
 
 
     /*************************************

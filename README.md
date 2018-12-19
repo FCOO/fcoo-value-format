@@ -89,30 +89,36 @@ For the formats `length`, `area`, and `speed` the output is
 | `hour_local` | `moment/string` | `"12"` | |
 | `date` | `moment/string` | `"25. Jan 2017"` | |
 | `date_weekday` | `moment/string` | `"Wednesday, 25. Jan 2017"` | |
-| `date_long` | `moment/string` | `"Wednesday, 25. January 2017"` | |
+| `date_long` | `moment/string` | `"25. January 2017"` | |
+| `date_long_weekday` | `moment/string` | `"Wednesday, 25. January 2017"` | |
 | `date_short` | `moment/string` | `"25/01/17"` | |
 | `date_utc` | `moment/string` | `"25. Jan 2017"` | |
 | `date_weekday_utc` | `moment/string` | `"Wednesday, 25. Jan 2017"` | |
-| `date_long_utc` | `moment/string` | `"Wednesday, 25. January 2017"` | |
+| `date_long_utc` | `moment/string` | `"25. January 2017"` | |
+| `date_long_weekday_utc` | `moment/string` | `"Wednesday, 25. January 2017"` | |
 | `date_short_utc` | `moment/string` | `"25/01/17"` | |
 | `date_format_utc` | `moment/string` | `"25. Jan 2017"` | |
 | `date_local` | `moment/string` | `"25. Jan 2017"` | |
 | `date_weekday_local` | `moment/string` | `"Wednesday, 25. Jan 2017"` | |
-| `date_long_local` | `moment/string` | `"Wednesday, 25. January 2017"` | |
+| `date_long_local` | `moment/string` | `"25. January 2017"` | |
+| `date_long_weekday_local` | `moment/string` | `"Wednesday, 25. January 2017"` | |
 | `date_short_local` | `moment/string` | `"25/01/17"` | |
 | `date_format_local` | `moment/string` | `"25. Jan 2017"` | |
 | `datetime` | `moment/string` | `"25. Jan 2017 14:00"` | |
 | `datetime_weekday` | `moment/string` | `"Wednesday, 25. Jan 2017 14:00"` | |
-| `datetime_long` | `moment/string` | `"Wednesday, 25. January 2017 14:00"` | |
+| `datetime_long` | `moment/string` | `"25. January 2017 14:00"` | |
+| `datetime_long_weekday` | `moment/string` | `"Wednesday, 25. January 2017 14:00"` | |
 | `datetime_short` | `moment/string` | `"25/01/17 14:00"` | |
 | `datetime_utc` | `moment/string` | `"25. Jan 2017 13:00"` | |
 | `datetime_weekday_utc` | `moment/string` | `"Wednesday, 25. Jan 2017 13:00"` | |
-| `datetime_long_utc` | `moment/string` | `"Wednesday, 25. January 2017 13:00"` | |
+| `datetime_long_utc` | `moment/string` | `"25. January 2017 13:00"` | |
+| `datetime_long_weekday_utc` | `moment/string` | `"Wednesday, 25. January 2017 13:00"` | |
 | `datetime_short_utc` | `moment/string` | `"25/01/17 13:00"` | |
 | `datetime_format_utc` | `moment/string` | `"25. Jan 2017 13:00"` | |
 | `datetime_local` | `moment/string` | `"25. Jan 2017 12:00"` | |
 | `datetime_weekday_local` | `moment/string` | `"Wednesday, 25. Jan 2017 12:00"` | |
-| `datetime_long_local` | `moment/string` | `"Wednesday, 25. January 2017 12:00"` | |
+| `datetime_long_local` | `moment/string` | `"25. January 2017 12:00"` | |
+| `datetime_long_weekday_local` | `moment/string` | `"Wednesday, 25. January 2017 12:00"` | |
 | `datetime_short_local` | `moment/string` | `"25/01/17 12:00"` | |
 | `datetime_format_local` | `moment/string` | `"25. Jan 2017 12:00"` | |
 | `timezone` | `moment/string` | `"Europe/Copenhagen"` | |
