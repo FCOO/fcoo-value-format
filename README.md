@@ -77,7 +77,7 @@ For the formats `length`, `area`, and `speed` the output is
 | `length`| `{number}` | `"12.3 nm"` | `removeTrailingZeros` / `true` / Convert input as meter to m, km or nm according to the setting `length` using `numberFixedWidth` |
 | `area`| `{number}` | `"1234 m2"` | `removeTrailingZeros` / `true` / Convert input as square meter to m2, km2 or nm2 according to the setting `area` using `numberFixedWidth` |
 | `speed`| `{number}` | `"12.3 km/h"` | `removeTrailingZeros` / `true` / Convert input as speed (m/s) to m/s, km/h or knots according to the setting `speed` using `numberFixedWidth` |
-| `direction`| `{number}` | `"380 rad"` | Convert input as direction (0-260) to direction or radian (0-400) according to the setting `direction` |
+| `direction`| `{number}` | `"380 rad"` | Convert input as direction (0-360) to direction or radian (0-400) according to the setting `direction` |
 | `lat` | `{leaflet latLng}` | `"55°07'11.9"N"`  |  | 
 | `lng` | `{leaflet latLng}` | `"12°59'13.2"E"`  |  | 
 | `latlng` | `{leaflet latLng}` | `"55°07'11.9"N 13°07'22.7"E"` | `separator` / `" "` / Text or html-code between the lat and lng. E.g. `"<br>"` |
