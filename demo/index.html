@@ -17,6 +17,7 @@
             padding:4px;
             width:400px;
         }
+        body { margin: 10px; }
     </style>
 
 </head>
@@ -160,7 +161,10 @@
         select = $('#latlngFormat');
         select.on('change', latlngFormatChanged);
         var latlngFormat = fcoo.settings.get('latlng'),
-            latlngFormats = ["55°07'11,9\"N", "55°07,123'N", '55,1276°N'];
+            latlngFormats = [];
+            for (var formatId = latLngFormat.LATLNGFORMAT_FIRST; formatId <= latLngFormat.LATLNGFORMAT_LAST; formatId++ )
+                latlngFormats.push('latlngFormat formatId='+formatId);
+
         $.each( latlngFormats, function( id, text ){
             var option = $('<option value="'+id+'">'+ text +'</option>').appendTo( select );
             if (latlngFormat == id)
@@ -168,10 +172,7 @@
         });
 
         var  latLng = L.latLng(55.12, 12.987);
-        $('#lat').vfValue( latLng );
-        $('#lng').vfValue( latLng );
-        latLng.lng = 13.123;
-        $('#latlng').vfValue( latLng, {separator:' and '} );
+        $('#latlng').vfValue( latLng, {separator:'<br>'} );
 
 
 

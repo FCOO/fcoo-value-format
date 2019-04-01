@@ -1,6 +1,6 @@
 {
   "name": "fcoo-value-format",
-  "version": "1.6.0",
+  "version": "2.0.0",
   "homepage": "https://github.com/FCOO/fcoo-value-format",
   "authors": [
     "Niels Holt"
@@ -16,10 +16,10 @@
   "dependencies": {
     "jquery": "latest",
     "fcoo-number": "fcoo/fcoo-number#^1.0.0",
-    "fcoo-latlng-format": "fcoo/fcoo-latlng-format#^1.0.0",
+    "fcoo-latlng-format": "fcoo/fcoo-latlng-format#^2.0.0",
     "fcoo-moment": "fcoo/fcoo-moment",
     "jquery-value-format": "fcoo/jquery-value-format#^1.7.0",
-    "leaflet-latlng-format": "fcoo/leaflet-latlng-format#^1.0.0",
+    "leaflet-latlng-format": "fcoo/leaflet-latlng-format#^2.0.0",
     "leaflet": "latest",
     "fcoo-unit": "fcoo/fcoo-unit#^1.0.1"
   },

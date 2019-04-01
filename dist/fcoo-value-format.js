@@ -187,18 +187,15 @@
     function convertLatLngBack( latLngArray ){ return latLngArray ? L.latLng(latLngArray) : null;  }
 
     /*************************************
-    formatId = lat, lng
-    *************************************/
-    addFormat({ id: 'lat', format : function( latLng ){ return latLng ? latLng.formatLat() : ''; }, convert: convertLatLng, convertBack: convertLatLngBack });
-    addFormat({ id: 'lng', format : function( latLng ){ return latLng ? latLng.formatLng() : ''; }, convert: convertLatLng, convertBack: convertLatLngBack });
-
-    /*************************************
     formatId = latlng
     *************************************/
     addFormat({
         id    : 'latlng',
         format: function( latLng, options ){
-            return latLng ? latLng.format().join(options.separator ? options.separator : '&nbsp;') : '';
+            options = options || {};
+            if (options.separator == undefined)
+                options.separator = '&nbsp;';
+            return latLng ? latLng.format(options) : '';
          },
          convert    : convertLatLng,
          convertBack: convertLatLngBack
