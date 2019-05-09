@@ -180,12 +180,6 @@
     *************************************/
     setGlobalEvent( window.fcoo.events.LATLNGFORMATCHANGED );
 
-    //convertLatLng - from LatLng to string
-    function convertLatLng( latLng ){ return [latLng.lat, latLng.lng]; }
-
-    //convertLatLngBack - convert from array to LatLng
-    function convertLatLngBack( latLngArray ){ return latLngArray ? L.latLng(latLngArray) : null;  }
-
     /*************************************
     formatId = latlng
     *************************************/
@@ -195,10 +189,8 @@
             options = options || {};
             if (options.separator == undefined)
                 options.separator = '&nbsp;';
-            return latLng ? latLng.format(options) : '';
-         },
-         convert    : convertLatLng,
-         convertBack: convertLatLngBack
+            return latLng ? window.latLngFormat(latLng[0], latLng[1]).format(options) : '';
+         }
      });
 
 
