@@ -9,6 +9,7 @@
 	<meta name='copyright' content='FCOO'>
 	<meta name='owner' content='FCOO'>
 
+    <link  href="css/all.css" rel="stylesheet">
     <link  href="bower_components.css" rel="stylesheet">
     <style>
         .timedate_obj {
@@ -23,13 +24,7 @@
 </head>
 
 <body style="font-family: Verdana" >
-    <h2>language</h2>
-    <select id="languageFormat"></select>
-
     <h2>number</h2>
-    <select id="numberFormat"></select>
-    <br>
-    <br>
     <div data-vf-format="number" data-vf-value="1000.123"></div>
     <div data-vf-format="number" data-vf-value="1234"></div>
     <div data-vf-format="number" data-vf-value="1000.123456789" data-vf-options='{"decimals":5}'></div>
@@ -37,16 +32,12 @@
 
     <hr>
     <h2>unit</h2>
-    <select id="unit"></select>
-    <select id="unitAngle"></select>
-    <br>
-    <br>
     <span>length 234.56 =>&nbsp;</span><span data-vf-format="length" data-vf-value="234.56"></span><br>
     <span>length 1000.123 =>&nbsp;</span><span data-vf-format="length" data-vf-value="1000.123"></span><br>
     <span>length 12345 =>&nbsp;</span><span data-vf-format="length" data-vf-value="12345"></span><br>
 
     <span>area 234.56 =>&nbsp;</span><span data-vf-format="area" data-vf-value="234.56"></span><br>
-    <span>area 1000.123 =>&nbsp;</span><span data-vf-format="area" data-vf-value="1000.123"></span><br>
+    <span>area 1000.123 =>&nbsp;</span><span data-vf-format="area" data-vf-value="1000.123" data-vf-options='{"decimals":3}'></span><br>
     <span>area 12388813 =>&nbsp;</span><span data-vf-format="area" data-vf-value="12388813"></span><br>
 
     <span>speed 2.3456 =>&nbsp;</span><span data-vf-format="speed" data-vf-value="2.3456"></span><br>
@@ -57,28 +48,14 @@
     <span>direction 110.00123 =>&nbsp;</span><span data-vf-format="direction" data-vf-value="110.00123"></span><br>
     <span>direction 212.388813 (with 3 decimals) =>&nbsp;</span><span data-vf-format="direction" data-vf-value="212.388813" data-vf-options='{"decimals":3}'></span><br>
 
-
-    <!-- <div data-vf-format="distance" data-vf-value="1000.123"></div>
-    <div data-vf-format="distance" data-vf-value="1234"></div>
-    <div data-vf-format="distance" data-vf-value="1000.123456789" data-vf-options="{'unit':'nm'}"></div>
-    <div data-vf-format="distance" data-vf-value="1000.123456789" data-vf-options="{'decimals':4, 'unit':'km'}"></div>
- -->
     <hr>
     <h2>lat & lng & latlng</h2>
-    <select id="latlngFormat"></select>
-    <br>
-    <br>
     <div id="lat"    data-vf-format="lat"></div>
     <div id="lng"    data-vf-format="lng"></div>
     <div id="latlng" data-vf-format="latlng"></div>
 
     <hr>
     <h2>date & time & timezone</h2>
-    <select id="timeFormat"></select>
-    <select id="dateFormat"></select>
-    <select id="timezoneFormat"></select>
-    <br>
-    <br>
     <table id="date_table" border=1 style="border:1px solid black; border-collapse: collapse;">
     <tr><th>formatId</th><th>Result</th></tr></table>
 
@@ -95,99 +72,18 @@
     <script src="bower_components.js"></script>
 	<script src="../src/fcoo-value-format.js"></script>
 	<script>
-        function createSelect( selectId, settingId, list ){
-            var select = $('#'+selectId),
-                selectedValue = fcoo.settings.get(settingId);
-
-            select.on('change', function ( e ){ fcoo.settings.set(settingId, e.target.selectedOptions[0].value); });
-
-            for (var i=0; i<list.length; i++ ){
-                var option = $('<option value="'+list[i].id+'">'+ list[i].text +'</option>').appendTo( select );
-                if (selectedValue == list[i].id)
-                    option.attr('selected', true);
-            }
-        }
-
-
-        //LANGUAGE
-        createSelect( 'languageFormat', 'language', [{id:"da", text:'Dansk / Danish'}, {id:'en', text:'Engelsk / English'}]);
-
-        //NUMBER
-        function numberFormatChanged( e ){
-            fcoo.settings.set('number', e.target.selectedOptions[0].value);
-        }
-        var select = $('#numberFormat');
-        select.on('change', numberFormatChanged);
-        var numberFormat = fcoo.settings.get('number');
-        $.each( window.fcoo.NumeralJsDelimiters, function( key, options ){
-            var option = $('<option value="'+key+'">'+ options.example +'</option>').appendTo( select );
-            if (numberFormat == key)
-                option.attr('selected', true);
-        });
-
-        function unitChanged( e ){
-            fcoo.settings.set('length', e.target.selectedOptions[0].value);
-            fcoo.settings.set('area', e.target.selectedOptions[0].value);
-            fcoo.settings.set('speed', e.target.selectedOptions[0].value);
-        }
-
-        select = $('#unit');
-        select.on('change', unitChanged);
-        var unit = fcoo.settings.get('length');
-        $.each( {METRIC: 'm, m2, m/s', METRIC2 : 'm, m2, km/t', NAUTICAL: 'nm, nm2, knots'}, function( key, text ){
-            var option = $('<option value="'+key+'">'+ text +'</option>').appendTo( select );
-            if (unit == key)
-                option.attr('selected', true);
-        });
-
-        function angleChanged( e ){
-            fcoo.settings.set('direction', e.target.selectedOptions[0].value);
-        }
-
-        select = $('#unitAngle');
-        select.on('change', angleChanged);
-        var direction = fcoo.settings.get('direction');
-        $.each( {DEGREE: 'Degree 0-360', GRADIAN: 'Gradian 0-400'}, function( key, text ){
-            var option = $('<option value="'+key+'">'+ text +'</option>').appendTo( select );
-            if (direction == key)
-                option.attr('selected', true);
-        });
-
-
-        //LATLNG
-        function latlngFormatChanged( e ){
-            fcoo.settings.set('latlng', parseInt(e.target.selectedOptions[0].value));
-        }
-        select = $('#latlngFormat');
-        select.on('change', latlngFormatChanged);
-        var latlngFormat = fcoo.settings.get('latlng'),
-            latlngFormats = [];
-            for (var formatId = latLngFormat.LATLNGFORMAT_FIRST; formatId <= latLngFormat.LATLNGFORMAT_LAST; formatId++ )
-                latlngFormats.push('latlngFormat formatId='+formatId);
-
-        $.each( latlngFormats, function( id, text ){
-            var option = $('<option value="'+id+'">'+ text +'</option>').appendTo( select );
-            if (latlngFormat == id)
-                option.attr('selected', true);
-        });
+        window.bsIsTouch = false;
+        window.bsIsTouch = (window.location.search =='?touch');
+        i18next.init();
+        i18next.changeLanguage('da');
+        i18next.options.fallbackLng = i18next.language == 'da' ? 'en' : 'da';
 
         var  latLng = [55.12, 12.987];
         $('#latlng').vfValue( latLng, {separator:'<br>'} );
 
-        //MOMENT
-        createSelect( 'timeFormat', 'time', [{id:'24', text:'13:00'}, {id:'12', text:'01:00pm'}]);
-
-        createSelect( 'dateFormat', 'date', [{id:'DMY', text:'D-M-Y'}, {id:'MDY', text:'M-D-Y'}, {id:'YMD', text:'Y-M-D'}]);
-
-        moment.sfAddTimezone([ {id:'Asia/Tokyo'}, {id:'America/Los_Angeles',	name:'America/LA'} ]);
-
-        var list = [];
-        for (var i=0; i<moment.simpleFormat.timezoneList.length; i++ )
-            list.push({id:moment.simpleFormat.timezoneList[i].id, text:moment.simpleFormat.timezoneList[i].fullName});
-        createSelect( 'timezoneFormat', 'timezone', list);
-
-
         var idList = [
+                        "timezone", "timezone_full",
+
                         "time",       "hour",
                         "time_utc",   "hour_utc",
                         "time_local", "hour_local",
@@ -205,9 +101,10 @@
             $table = $('#date_table');
 
         function addRow( formatId, options, name ){
+            var m = moment();
             $('<tr></tr>').appendTo( $table )
                 .append( $('<td><code>'+(name || formatId) +'</code></td>') )
-                .append( $('<td></td>').append( $('<span></span>').vfFormat( formatId ).vfValue( moment() ).vfOptions( options ) ) );
+                .append( $('<td></td>').append( $('<span></span>').vfFormat( formatId ).vfValue( m ).vfOptions( options ) ) );
         }
 
         for (var i=0; i<idList.length; i++ )
@@ -228,6 +125,12 @@
         $('#update_moment').on('click', function(){
             test_moment.add(63, 'm');
             $('.timedate_obj').vfValue(test_moment);
+        });
+
+
+        $('body').on('contextmenu', function(){
+            fcoo.globalSetting.edit();
+            return false;
         });
 
     </script>

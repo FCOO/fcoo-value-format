@@ -7,13 +7,12 @@
 	https://github.com/FCOO
 
 ****************************************************************************/
-
+//setTimeout( function(){//HER
 (function ($, window, document, undefined) {
 	"use strict";
 
 	//Create fcoo-namespace
-	window.fcoo = window.fcoo || {};
-	var ns = window.fcoo;
+	var ns = window.fcoo = window.fcoo || {};
 
     /***************************************************************************
     Updating formats on global events
@@ -29,7 +28,9 @@
         //Add event to current global-event
         if (updateGlobalEvent && formatIdList.length){
             var formats = formatIdList.join(' ');
-            ns.events.onLast( updateGlobalEvent, function(){ $.valueFormat.update( formats ); });
+            ns.events.onLast( updateGlobalEvent, function(){
+                $.valueFormat.update( formats );
+            });
         }
         updateGlobalEvent = eventName;
         formatIdList = [];
@@ -46,11 +47,7 @@
     NUMBER FORMAT
     **************************************
     *************************************/
-    setGlobalEvent( window.fcoo.events.NUMBERFORMATCHANGED );
-
-    function getDecimals( options, defaultDecimals ){
-        return options.decimals !== undefined ? parseInt(options.decimals) : defaultDecimals !== undefined ? defaultDecimals : 2;
-    }
+    setGlobalEvent( ns.events.NUMBERFORMATCHANGED );
 
     //function round(value, decimals) {
     //    return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
@@ -61,8 +58,8 @@
     }
 
     function formatNumber( value, options ){
-        var decimals = getDecimals( options ),
-            format = options.format ? options.format : '0,0[.]' + (decimals ? Array(decimals+1).join('0') : '');
+        var decimals = options.decimals !== undefined ? parseInt(options.decimals) : 2,
+            format   = options.format ? options.format : '0,0[.]' + (decimals ? Array(decimals+1).join('0') : '');
         return window.numeral( value ).format ( format );
     }
 
@@ -71,7 +68,9 @@
     *************************************/
     addFormat({
         id     : 'number',
-        format : function( value, options ){ return formatNumber( value, options ); },
+        format : function( value, options ){
+            return formatNumber( value, options );
+        },
         convert: convertNumber
     });
 
@@ -80,7 +79,7 @@
     UNIT (length, area, speed, ddirection)
     **************************************
     *************************************/
-    setGlobalEvent( window.fcoo.events.UNITCHANGED );
+    setGlobalEvent( ns.events.UNITCHANGED );
 
     //length
     addFormat({
@@ -90,7 +89,7 @@
                 removeTrailingZeros = options && (typeof options.removeTrailingZeros == 'boolean') ? options.removeTrailingZeros : true,
                 unitStr = 'm';
 
-            if (ns.settings.get('length') == ns.unit.NAUTICAL)
+            if (ns.globalSetting.get('length') == ns.unit.NAUTICAL)
                 unitStr = 'nm';
             else {
                 //Convert from m to km if >= 1000m
@@ -118,7 +117,7 @@
                 removeTrailingZeros = options && (typeof options.removeTrailingZeros == 'boolean') ? options.removeTrailingZeros : true,
                 unitStr = 'm';
 
-            if (ns.settings.get('area') == ns.unit.NAUTICAL)
+            if (ns.globalSetting.get('area') == ns.unit.NAUTICAL)
                 unitStr = 'nm';
             else {
                 //Convert from m2 to km2 if >= 10000m2
@@ -144,28 +143,26 @@
         format: function( value, options ){
             var unitStr;
             options = $.extend({ decimals: 0}, options || {});
-            switch (ns.settings.get('direction')){
+            switch (ns.globalSetting.get('direction')){
                 case ns.unit.DEGREE : unitStr = '<sup>o</sup>'; break;
-                case ns.unit.GRADIAN: unitStr = '&nbsp;rad'; break; //or <sup>c</sup> or <sup>R</sup>
+                case ns.unit.GRADIAN: unitStr = '<sup>g</sup>'; break; //or <sup>c</sup> or <sup>R</sup>
             }
 
             return formatNumber(ns.unit.getDirection( value ), options ) +  unitStr;
         }
     });
 
-
-
     //speed - also updated on language changed
-    setGlobalEvent( window.fcoo.events.UNITCHANGED + ' ' + window.fcoo.events.LANGUAGECHANGED );
+    setGlobalEvent( ns.events.UNITCHANGED + ' ' + ns.events.LANGUAGECHANGED );
     addFormat({
         id    : 'speed',
         format: function( value, options ){
             var removeTrailingZeros = options && (typeof options == 'boolean') ? options : true,
                 unitStr;
-            switch (ns.settings.get('speed')){
-                case ns.unit.METRIC : unitStr = 'm/s'; break;
-                case ns.unit.METRIC2: unitStr = window.i18next.sentence( {da:'km/t', en:'km/h'}); break;
-                case ns.unit.NAUTICAL: unitStr = window.i18next.sentence( {da:'knob', en:'knots'}); break;
+            switch (ns.globalSetting.get('speed')){
+                case ns.unit.METRIC  : unitStr = 'm/s'; break;
+                case ns.unit.METRIC2 : unitStr = window.i18next.sentence( {da:'km/t', en:'km/h'}); break;
+                case ns.unit.NAUTICAL: unitStr = 'kn'; break; //window.i18next.sentence( {da:'knob', en:'knots'}); break;
             }
 
             return ns.number.numberFixedWidth(ns.unit.getSpeed( value ), 3, removeTrailingZeros) + '&nbsp;' + unitStr;
@@ -178,7 +175,7 @@
     LATLNG
     **************************************
     *************************************/
-    setGlobalEvent( window.fcoo.events.LATLNGFORMATCHANGED );
+    setGlobalEvent( ns.events.LATLNGFORMATCHANGED );
 
     /*************************************
     formatId = latlng
@@ -199,7 +196,7 @@
     DATE AND TIME (MOMENT)
     **************************************
     *************************************/
-    setGlobalEvent( window.fcoo.events.DATETIMEFORMATCHANGED );
+    setGlobalEvent( ns.events.DATETIMEFORMATCHANGED );
 
     function convertMoment( momentOrStr ){
         return jQuery.type( momentOrStr ) == "string" ? momentOrStr : momentOrStr.format();
@@ -352,3 +349,5 @@
 	});
 */
 }(jQuery, this, document));
+
+//}, 2000);//HER
