@@ -15088,18 +15088,6 @@ Adjustment to Bootstrap tabs
 .lang-flag-icon-lang {
   font-family: daenfokldesvno; }
 
-html.lang2-da .hide-for-lang2-da {
-  display: none !important; }
-
-html.no-lang2-da .show-for-lang2-da {
-  display: none !important; }
-
-html.lang2-en .hide-for-lang2-en {
-  display: none !important; }
-
-html.no-lang2-en .show-for-lang2-en {
-  display: none !important; }
-
 /***********************************************
 	fcoo-moment.scss,
 
@@ -15112,28 +15100,47 @@ html.no-lang2-en .show-for-lang2-en {
 ************************************************/
 /* stylelint-disable order/properties-alphabetical-order */
 /* stylelint-enable */
+/*****************************************************************************************
+-fcoo-settings.scss,
+
+setting-modernizr( $setting-group-id: global-setting, $setting-id, $value-list: () )
+$setting-group-id: global-setting,
+$setting-id: The is of the setting
+$value-list: List of possible values of setting-id. If empty list => setting-id har an boolean value
+
+Ex:
+@include setting-modernizr($setting-id: TEST, $value-list:(NONE ALL TEST));
+Create css to make it able to use classes "show-for-global-setting-TEST-ALL" and "hide-for-global-setting-TEST-NONE"
+*****************************************************************************************/
 /*
 Adds Modernizr-test:
 showrelative: Show also the date/time as relative to now
 showutc     : Show also the date/time in UTC
 timezoneutc : On when the selected time zone is UTC
 
-NOTE: To only show a element when the user has selected "showutc" AND the time zone isn't UTC: class="show-for-showutc hide-for-timezoneutc"
+NOTE: To only show a element when the user has selected "showutc" AND the time zone isn't UTC:
+class="hide-for-global-setting-timezone-utc show-for-global-setting-showutc"
 */
-html.showrelative .hide-for-showrelative {
+.global-setting-showrelative .hide-for-global-setting-showrelative {
   display: none !important; }
 
-html.no-showrelative .show-for-showrelative {
+.no-global-setting-showrelative .show-for-global-setting-showrelative {
   display: none !important; }
 
-html.showutc .hide-for-showutc {
+.global-setting-showutc .hide-for-global-setting-showutc {
   display: none !important; }
 
-html.no-showutc .show-for-showutc {
+.no-global-setting-showutc .show-for-global-setting-showutc {
   display: none !important; }
 
-html.timezoneutc .hide-for-timezoneutc {
+.global-setting-timezone-utc .hide-for-global-setting-timezone-utc {
   display: none !important; }
 
-html.no-timezoneutc .show-for-timezoneutc {
+.no-global-setting-timezone-utc .show-for-global-setting-timezone-utc {
+  display: none !important; }
+
+.global-setting-timezone-local .hide-for-global-setting-timezone-local {
+  display: none !important; }
+
+.no-global-setting-timezone-local .show-for-global-setting-timezone-local {
   display: none !important; }

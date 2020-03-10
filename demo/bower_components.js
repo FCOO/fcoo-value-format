@@ -17735,7 +17735,7 @@ return jQuery;
 
 ;
 /****************************************************************************
-	fake-localstorage.js,
+	fake-localstorage.js, 
 
 	(c) 2017, FCOO
 
@@ -17746,54 +17746,54 @@ return jQuery;
 
 (function (window/*, document, undefined*/) {
 	"use strict";
-
+	
     /*********************************************************************
     Determinate if localStorage is supported and available
     If the browser is in 'Private' mode not all browser supports localStorage
     In localStorage isn't supported a fake version is installed
     At the moment no warning is given when localStorage isn't supported since
-    some browser in private-mode allows the use of window.localStorage but
+    some browser in private-mode allows the use of window.localStorage but 
     don't save it when the session ends
     *********************************************************************/
     window.fake_localstorage_installed = false;
 
     // Test taken from https://gist.github.com/engelfrost/fd707819658f72b42f55
     if (typeof window.localStorage === 'object') {
-        // Safari will throw a fit if we try to use localStorage.setItem in private browsing mode.
+        // Safari will throw a fit if we try to use localStorage.setItem in private browsing mode. 
         try {
             localStorage.setItem('localStorageTest', 1);
             localStorage.removeItem('localStorageTest');
             window.fake_localstorage_installed = false;
-        }
+        } 
         catch (e) {
             window.fake_localstorage_installed = true;
         }
-    }
-    else
-        window.fake_localstorage_installed = true;
+    } 
+    else 
+        window.fake_localstorage_installed = true;        
 
     if (window.fake_localstorage_installed){
         /*********************************************************************
         Create a fake localStorage for any browser that does not support it.
 
         Taken from https://gist.github.com/engelfrost/fd707819658f72b42f55:
-            Fake localStorage implementation.
-            Mimics localStorage, including events.
-            It will work just like localStorage, except for the persistant storage part.
+            Fake localStorage implementation. 
+            Mimics localStorage, including events. 
+            It will work just like localStorage, except for the persistant storage part. 
         *********************************************************************/
         var fakeLocalStorage = {};
-        var storage;
-
-        // If Storage exists we modify it to write to our fakeLocalStorage object instead.
-        // If Storage does not exist we create an empty object.
+        var storage; 
+  
+        // If Storage exists we modify it to write to our fakeLocalStorage object instead. 
+        // If Storage does not exist we create an empty object. 
         if (window.Storage && window.localStorage) {
-            storage = window.Storage.prototype;
+            storage = window.Storage.prototype; 
         } else {
             // We don't bother implementing a fake Storage object
-            window.localStorage = {};
-            storage = window.localStorage;
+            window.localStorage = {}; 
+            storage = window.localStorage; 
         }
-
+  
         // For older IE
         if (!window.location.origin) {
             window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
@@ -17856,13 +17856,13 @@ return jQuery;
             for (j=0; j<eventNames.length; j++ ){
                 eventName = eventNames[j];
                 if (eventName){
-                    this.events[eventName] = this.events[eventName] || [];
+                    this.events[eventName] = this.events[eventName] || [];         
                     var i, lgd = this.events[eventName].length;
                     if (reverse){
                         for (i=lgd-1; i>=0; i-- )
                             if (func( this.events[eventName][i], i, this.events[eventName] ))
                                 break;
-                    }
+                    } 
                     else {
                         for (i=0; i<lgd; i++ )
                             if (func( this.events[eventName][i], i, this.events[eventName] ))
@@ -17878,11 +17878,11 @@ return jQuery;
             for (i=0; i<eventNames.length; i++ ){
                 eventName = eventNames[i];
                 if (eventName){
-                    this.events[eventName] = this.events[eventName] || [];
+                    this.events[eventName] = this.events[eventName] || [];         
                     this.events[eventName].push( {
                         callback: callback,
                         context : context || null,
-                        options : $.extend( {once:false, first:false, last:false}, options )
+                        options : $.extend( {once:false, first:false, last:false}, options ) 
                     });
                 }
             }
@@ -17899,7 +17899,7 @@ return jQuery;
             eventNames = ( eventNames || "" ).match( (/\S+/g) ) || [ "" ];
             _loop_func = function( eventObj, index, list ){
                 if ( (callback == eventObj.callback) &&
-                    (!context || (context == eventObj.context)) ){
+                    (!context || (context == eventObj.context)) ){ 
                     list.splice(index, 1);
                     return true;
                 }
@@ -17914,32 +17914,32 @@ return jQuery;
         };
 
 
-        this.fire = function( eventName /*, arg1, arg2, .., argN */ ){
+        this.fire = function( eventName /*, arg1, arg2, .., argN */ ){ 
             var newArguments = [];
             for (var i=1; i < arguments.length; i++) {
                 newArguments.push(arguments[i]);
             }
 
             //Fire the functions marked 'first'
-            this._loop( eventName, function( eventObj ){
+            this._loop( eventName, function( eventObj ){ 
                 if (eventObj.options.first)
-                    eventObj.callback.apply( eventObj.context, newArguments );
+                    eventObj.callback.apply( eventObj.context, newArguments );      
             });
 
             //Fire the functions not marked 'first' or 'last'
-            this._loop( eventName, function( eventObj ){
+            this._loop( eventName, function( eventObj ){ 
                 if (!eventObj.options.first && !eventObj.options.last)
-                    eventObj.callback.apply( eventObj.context, newArguments );
+                    eventObj.callback.apply( eventObj.context, newArguments );      
             });
 
             //Fire the functions marked 'last'
-            this._loop( eventName, function( eventObj ){
+            this._loop( eventName, function( eventObj ){ 
                 if (eventObj.options.last)
-                    eventObj.callback.apply( eventObj.context, newArguments );
+                    eventObj.callback.apply( eventObj.context, newArguments );      
             });
-
+            
             //Remove all functions marked 'once'
-            this._loop( eventName, function( eventObj, index, list ){
+            this._loop( eventName, function( eventObj, index, list ){ 
                 if (eventObj.options.once)
                     list.splice(index, 1);
             }, true);
@@ -17950,7 +17950,7 @@ return jQuery;
         this.oneFirst = function(){ this.onceFirst( arguments ); };
         this.oneLast  = function(){ this.onceLast( arguments  ); };
     }
-
+  
     // expose access to the constructor
     window.GlobalEvents = GlobalEvents;
 
@@ -17998,11 +17998,11 @@ return jQuery;
 	var minor = parseInt(splitVersion[1]);
 
 	var JQ_LT_17 = (major < 1) || (major == 1 && minor < 7);
-
+	
 	function eventsData($el) {
 		return JQ_LT_17 ? $el.data('events') : $._data($el[0]).events;
 	}
-
+	
 	function moveHandlerToTop($el, eventName, isDelegated) {
 		var data = eventsData($el);
 		var events = data[eventName];
@@ -18020,7 +18020,7 @@ return jQuery;
 			events.unshift(events.pop());
 		}
 	}
-
+	
 	function moveEventHandlers($elems, eventsString, isDelegate) {
 		var events = eventsString.split(/\s+/);
 		$elems.each(function() {
@@ -18030,7 +18030,7 @@ return jQuery;
 			}
 		});
 	}
-
+	
 	function makeMethod(methodName) {
 		$.fn[methodName + 'First'] = function() {
 			var args = $.makeArray(arguments);
@@ -18055,7 +18055,7 @@ return jQuery;
 	$.fn.delegateFirst = function() {
 		var args = $.makeArray(arguments);
 		var eventsString = args[1];
-
+		
 		if (eventsString) {
 			args.splice(0, 2);
 			$.fn.delegate.apply(this, arguments);
@@ -18075,7 +18075,7 @@ return jQuery;
 
 		return this;
 	};
-
+	
 	// on (jquery >= 1.7)
 	if (!JQ_LT_17) {
 		$.fn.onFirst = function(types, selector) {
@@ -26673,8 +26673,8 @@ if (typeof define === 'function' && define.amd) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory,
-            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory, 
+            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function(Inputmask) {
@@ -26768,8 +26768,8 @@ if (typeof define === 'function' && define.amd) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(3), __webpack_require__(5) ],
-            __WEBPACK_AMD_DEFINE_FACTORY__ = factory, __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(3), __webpack_require__(5) ], 
+            __WEBPACK_AMD_DEFINE_FACTORY__ = factory, __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function($, window, undefined) {
@@ -28282,7 +28282,7 @@ if (typeof define === 'function' && define.amd) {
             function seekPrevious(pos, newBlock) {
                 var position = pos, tests;
                 if (position <= 0) return 0;
-                while (--position > 0 && (newBlock === true && getTest(position).match.newBlockMarker !== true || newBlock !== true && !isMask(position) && (tests = getTests(position),
+                while (--position > 0 && (newBlock === true && getTest(position).match.newBlockMarker !== true || newBlock !== true && !isMask(position) && (tests = getTests(position), 
                 tests.length < 2 || tests.length === 2 && tests[1].match.def === ""))) {}
                 return position;
             }
@@ -29519,8 +29519,8 @@ if (typeof define === 'function' && define.amd) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(4) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory,
-            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(4) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory, 
+            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function($) {
@@ -29549,8 +29549,8 @@ if (typeof define === 'function' && define.amd) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory,
-            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory, 
+            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function(Inputmask) {
@@ -29801,8 +29801,8 @@ if (typeof define === 'function' && define.amd) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory,
-            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory, 
+            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function(Inputmask) {
@@ -30352,8 +30352,8 @@ if (typeof define === 'function' && define.amd) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(4), __webpack_require__(2) ],
-            __WEBPACK_AMD_DEFINE_FACTORY__ = factory, __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(4), __webpack_require__(2) ], 
+            __WEBPACK_AMD_DEFINE_FACTORY__ = factory, __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function($, Inputmask) {
@@ -30503,9 +30503,9 @@ if (typeof define === 'function' && define.amd) {
 (function ( $ ) {
 	var attachEvent = document.attachEvent,
 		stylesCreated = false;
-
+	
 	var jQuery_resize = $.fn.resize;
-
+	
 	$.fn.resize = function(callback) {
 		return this.each(function() {
 			if(this == window)
@@ -30520,14 +30520,14 @@ if (typeof define === 'function' && define.amd) {
 			removeResizeListener(this, callback);
 		});
 	}
-
+	
 	if (!attachEvent) {
 		var requestFrame = (function(){
 			var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame ||
 								function(fn){ return window.setTimeout(fn, 20); };
 			return function(fn){ return raf(fn); };
 		})();
-
+		
 		var cancelFrame = (function(){
 			var cancel = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame ||
 								   window.clearTimeout;
@@ -30551,7 +30551,7 @@ if (typeof define === 'function' && define.amd) {
 			return element.offsetWidth != element.__resizeLast__.width ||
 						 element.offsetHeight != element.__resizeLast__.height;
 		}
-
+		
 		function scrollListener(e){
 			var element = this;
 			resetTriggers(this);
@@ -30566,7 +30566,7 @@ if (typeof define === 'function' && define.amd) {
 				}
 			});
 		};
-
+		
 		/* Detect CSS Animations support to detect element display/re-attach */
 		var animation = false,
 			animationstring = 'animation',
@@ -30577,8 +30577,8 @@ if (typeof define === 'function' && define.amd) {
 			pfx  = '';
 		{
 			var elm = document.createElement('fakeelement');
-			if( elm.style.animationName !== undefined ) { animation = true; }
-
+			if( elm.style.animationName !== undefined ) { animation = true; }    
+			
 			if( animation === false ) {
 				for( var i = 0; i < domPrefixes.length; i++ ) {
 					if( elm.style[ domPrefixes[i] + 'AnimationName' ] !== undefined ) {
@@ -30592,12 +30592,12 @@ if (typeof define === 'function' && define.amd) {
 				}
 			}
 		}
-
+		
 		var animationName = 'resizeanim';
 		var animationKeyframes = '@' + keyframeprefix + 'keyframes ' + animationName + ' { from { opacity: 0; } to { opacity: 0; } } ';
 		var animationStyle = keyframeprefix + 'animation: 1ms ' + animationName + '; ';
 	}
-
+	
 	function createStyles() {
 		if (!stylesCreated) {
 			//opacity:0 works around a chrome bug https://code.google.com/p/chromium/issues/detail?id=286360
@@ -30606,7 +30606,7 @@ if (typeof define === 'function' && define.amd) {
 					'.resize-triggers, .resize-triggers > div, .contract-trigger:before { content: \" \"; display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; } .resize-triggers > div { background: #eee; overflow: auto; } .contract-trigger:before { width: 200%; height: 200%; }',
 				head = document.head || document.getElementsByTagName('head')[0],
 				style = document.createElement('style');
-
+			
 			style.type = 'text/css';
 			if (style.styleSheet) {
 				style.styleSheet.cssText = css;
@@ -30618,7 +30618,7 @@ if (typeof define === 'function' && define.amd) {
 			stylesCreated = true;
 		}
 	}
-
+	
 	window.addResizeListener = function(element, fn){
 		if (attachEvent) element.attachEvent('onresize', fn);
 		else {
@@ -30633,7 +30633,7 @@ if (typeof define === 'function' && define.amd) {
 				element.appendChild(element.__resizeTriggers__);
 				resetTriggers(element);
 				element.addEventListener('scroll', scrollListener, true);
-
+				
 				/* Listen for a css animation to detect element display/re-attach */
 				animationstartevent && element.__resizeTriggers__.addEventListener(animationstartevent, function(e) {
 					if(e.animationName == animationName)
@@ -30643,7 +30643,7 @@ if (typeof define === 'function' && define.amd) {
 			element.__resizeListeners__.push(fn);
 		}
 	};
-
+	
 	window.removeResizeListener = function(element, fn){
 		if (attachEvent) element.detachEvent('onresize', fn);
 		else {
@@ -31014,7 +31014,7 @@ if (typeof define === 'function' && define.amd) {
 
 ;
 /****************************************************************************
-	modernizr-javascript.js,
+	modernizr-javascript.js, 
 
 	(c) 2016, FCOO
 
@@ -31025,20 +31025,20 @@ if (typeof define === 'function' && define.amd) {
 
 (function ($, window, document, undefined) {
 	"use strict";
-
+	
 	var ns = window;
 
     //Extend the jQuery prototype
     $.fn.extend({
-        modernizrOn : function( test ){
-            return this.modernizrToggle( test, true );
+        modernizrOn : function( test ){ 
+            return this.modernizrToggle( test, true ); 
         },
 
-        modernizrOff: function( test ){
-            return this.modernizrToggle( test, false );
+        modernizrOff: function( test ){ 
+            return this.modernizrToggle( test, false ); 
         },
-
-        modernizrToggle: function( test, on ){
+        
+        modernizrToggle: function( test, on ){ 
 		if ( on === undefined )
             return this.modernizrToggle( test, !this.hasClass( test ) );
 
@@ -33900,19 +33900,19 @@ if (typeof define === 'function' && define.amd) {
 ;
 /* @preserve
  * The MIT License (MIT)
- *
+ * 
  * Copyright (c) 2013-2018 Petka Antonov
- *
+ * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
@@ -33920,7 +33920,7 @@ if (typeof define === 'function' && define.amd) {
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- *
+ * 
  */
 /**
  * bluebird build version 3.7.2
@@ -37512,28 +37512,28 @@ _dereq_('./using.js')(Promise, apiRejection, tryConvertToPromise, createContext,
 _dereq_('./any.js')(Promise);
 _dereq_('./each.js')(Promise, INTERNAL);
 _dereq_('./filter.js')(Promise, INTERNAL);
-
-    util.toFastProperties(Promise);
-    util.toFastProperties(Promise.prototype);
-    function fillTypes(value) {
-        var p = new Promise(INTERNAL);
-        p._fulfillmentHandler0 = value;
-        p._rejectionHandler0 = value;
-        p._promise0 = value;
-        p._receiver0 = value;
-    }
-    // Complete slack tracking, opt out of field-type tracking and
-    // stabilize map
-    fillTypes({a: 1});
-    fillTypes({b: 2});
-    fillTypes({c: 3});
-    fillTypes(1);
-    fillTypes(function(){});
-    fillTypes(undefined);
-    fillTypes(false);
-    fillTypes(new Promise(INTERNAL));
-    debug.setBounds(Async.firstLineError, util.lastLineError);
-    return Promise;
+                                                         
+    util.toFastProperties(Promise);                                          
+    util.toFastProperties(Promise.prototype);                                
+    function fillTypes(value) {                                              
+        var p = new Promise(INTERNAL);                                       
+        p._fulfillmentHandler0 = value;                                      
+        p._rejectionHandler0 = value;                                        
+        p._promise0 = value;                                                 
+        p._receiver0 = value;                                                
+    }                                                                        
+    // Complete slack tracking, opt out of field-type tracking and           
+    // stabilize map                                                         
+    fillTypes({a: 1});                                                       
+    fillTypes({b: 2});                                                       
+    fillTypes({c: 3});                                                       
+    fillTypes(1);                                                            
+    fillTypes(function(){});                                                 
+    fillTypes(undefined);                                                    
+    fillTypes(false);                                                        
+    fillTypes(new Promise(INTERNAL));                                        
+    debug.setBounds(Async.firstLineError, util.lastLineError);               
+    return Promise;                                                          
 
 };
 
@@ -49557,7 +49557,7 @@ return index;
 
     var keys = ['Hours', 'Minutes', 'Seconds', 'Milliseconds'];
     var maxValues = [24, 60, 60, 1000];
-
+    
     // Capitalize first letter
     key = key.charAt(0).toUpperCase() + key.slice(1).toLowerCase();
 
@@ -52133,12 +52133,12 @@ options:
 /*! @websanova/url - v2.6.3 - 2020-01-25 */
 !function(){function t(t,r){var a,o={};if("tld?"!==t){if(r=r||window.location.toString(),!t)return r;if(t=t.toString(),a=r.match(/^mailto:([^\/].+)/))o.protocol="mailto",o.email=a[1];else{if((a=r.match(/(.*?)\/#\!(.*)/))&&(r=a[1]+a[2]),(a=r.match(/(.*?)#(.*)/))&&(o.hash=a[2],r=a[1]),o.hash&&t.match(/^#/))return h(t,o.hash);if((a=r.match(/(.*?)\?(.*)/))&&(o.query=a[2],r=a[1]),o.query&&t.match(/^\?/))return h(t,o.query);if((a=r.match(/(.*?)\:?\/\/(.*)/))&&(o.protocol=a[1].toLowerCase(),r=a[2]),(a=r.match(/(.*?)(\/.*)/))&&(o.path=a[2],r=a[1]),o.path=(o.path||"").replace(/^([^\/])/,"/$1"),t.match(/^[\-0-9]+$/)&&(t=t.replace(/^([^\/])/,"/$1")),t.match(/^\//))return e(t,o.path.substring(1));if((a=(a=e("/-1",o.path.substring(1)))&&a.match(/(.*?)\.([^.]+)$/))&&(o.file=a[0],o.filename=a[1],o.fileext=a[2]),(a=r.match(/(.*)\:([0-9]+)$/))&&(o.port=a[2],r=a[1]),(a=r.match(/(.*?)@(.*)/))&&(o.auth=a[1],r=a[2]),o.auth&&(a=o.auth.match(/(.*)\:(.*)/),o.user=a?a[1]:o.auth,o.pass=a?a[2]:void 0),o.hostname=r.toLowerCase(),"."===t.charAt(0))return e(t,o.hostname);o.port=o.port||("https"===o.protocol?"443":"80"),o.protocol=o.protocol||("443"===o.port?"https":"http")}return t in o?o[t]:"{}"===t?o:void 0}}function e(t,r){var a=t.charAt(0),o=r.split(a);return a===t?o:o[(t=parseInt(t.substring(1),10))<0?o.length+t:t-1]}function h(t,r){for(var a,o=t.charAt(0),e=r.split("&"),h=[],n={},c=[],i=t.substring(1),p=0,u=e.length;p<u;p++)if(""!==(h=(h=e[p].match(/(.*?)=(.*)/))||[e[p],e[p],""])[1].replace(/\s/g,"")){if(h[2]=(a=h[2]||"",decodeURIComponent(a.replace(/\+/g," "))),i===h[1])return h[2];(c=h[1].match(/(.*)\[([0-9]+)\]/))?(n[c[1]]=n[c[1]]||[],n[c[1]][c[2]]=h[2]):n[h[1]]=h[2]}return o===t?n:n[i]}window.url=t}();
 ;
-/*
-  @package NOTY - Dependency-free notification library
-  @version version: 3.1.4
-  @contributors https://github.com/needim/noty/graphs/contributors
-  @documentation Examples and Documentation - http://needim.github.com/noty
-  @license Licensed under the MIT licenses: http://www.opensource.org/licenses/mit-license.php
+/* 
+  @package NOTY - Dependency-free notification library 
+  @version version: 3.1.4 
+  @contributors https://github.com/needim/noty/graphs/contributors 
+  @documentation Examples and Documentation - http://needim.github.com/noty 
+  @license Licensed under the MIT licenses: http://www.opensource.org/licenses/mit-license.php 
 */
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -54171,7 +54171,7 @@ Promise$2.prototype = {
     The primary way of interacting with a promise is through its `then` method,
     which registers callbacks to receive either a promise's eventual value or the
     reason why the promise cannot be fulfilled.
-
+  
     ```js
     findUser().then(function(user){
       // user is available
@@ -54179,14 +54179,14 @@ Promise$2.prototype = {
       // user is unavailable, and you are given the reason why
     });
     ```
-
+  
     Chaining
     --------
-
+  
     The return value of `then` is itself a promise.  This second, 'downstream'
     promise is resolved with the return value of the first promise's fulfillment
     or rejection handler, or rejected if the handler throws an exception.
-
+  
     ```js
     findUser().then(function (user) {
       return user.name;
@@ -54196,7 +54196,7 @@ Promise$2.prototype = {
       // If `findUser` fulfilled, `userName` will be the user's name, otherwise it
       // will be `'default name'`
     });
-
+  
     findUser().then(function (user) {
       throw new Error('Found user, but still unhappy');
     }, function (reason) {
@@ -54209,7 +54209,7 @@ Promise$2.prototype = {
     });
     ```
     If the downstream promise does not specify a rejection handler, rejection reasons will be propagated further downstream.
-
+  
     ```js
     findUser().then(function (user) {
       throw new PedagogicalException('Upstream error');
@@ -54221,15 +54221,15 @@ Promise$2.prototype = {
       // The `PedgagocialException` is propagated all the way down to here
     });
     ```
-
+  
     Assimilation
     ------------
-
+  
     Sometimes the value you want to propagate to a downstream promise can only be
     retrieved asynchronously. This can be achieved by returning a promise in the
     fulfillment or rejection handler. The downstream promise will then be pending
     until the returned promise is settled. This is called *assimilation*.
-
+  
     ```js
     findUser().then(function (user) {
       return findCommentsByAuthor(user);
@@ -54237,9 +54237,9 @@ Promise$2.prototype = {
       // The user's comments are now available
     });
     ```
-
+  
     If the assimliated promise rejects, then the downstream promise will also reject.
-
+  
     ```js
     findUser().then(function (user) {
       return findCommentsByAuthor(user);
@@ -54249,15 +54249,15 @@ Promise$2.prototype = {
       // If `findCommentsByAuthor` rejects, we'll have the reason here
     });
     ```
-
+  
     Simple Example
     --------------
-
+  
     Synchronous Example
-
+  
     ```javascript
     let result;
-
+  
     try {
       result = findResult();
       // success
@@ -54265,9 +54265,9 @@ Promise$2.prototype = {
       // failure
     }
     ```
-
+  
     Errback Example
-
+  
     ```js
     findResult(function(result, err){
       if (err) {
@@ -54277,9 +54277,9 @@ Promise$2.prototype = {
       }
     });
     ```
-
+  
     Promise Example;
-
+  
     ```javascript
     findResult().then(function(result){
       // success
@@ -54287,15 +54287,15 @@ Promise$2.prototype = {
       // failure
     });
     ```
-
+  
     Advanced Example
     --------------
-
+  
     Synchronous Example
-
+  
     ```javascript
     let author, books;
-
+  
     try {
       author = findAuthor();
       books  = findBooksByAuthor(author);
@@ -54304,19 +54304,19 @@ Promise$2.prototype = {
       // failure
     }
     ```
-
+  
     Errback Example
-
+  
     ```js
-
+  
     function foundBooks(books) {
-
+  
     }
-
+  
     function failure(reason) {
-
+  
     }
-
+  
     findAuthor(function(author, err){
       if (err) {
         failure(err);
@@ -54341,9 +54341,9 @@ Promise$2.prototype = {
       }
     });
     ```
-
+  
     Promise Example;
-
+  
     ```javascript
     findAuthor().
       then(findBooksByAuthor).
@@ -54353,7 +54353,7 @@ Promise$2.prototype = {
       // something went wrong
     });
     ```
-
+  
     @method then
     @param {Function} onFulfilled
     @param {Function} onRejected
@@ -54365,25 +54365,25 @@ Promise$2.prototype = {
   /**
     `catch` is simply sugar for `then(undefined, onRejection)` which makes it the same
     as the catch block of a try/catch statement.
-
+  
     ```js
     function findAuthor(){
       throw new Error('couldn't find that author');
     }
-
+  
     // synchronous
     try {
       findAuthor();
     } catch(reason) {
       // something went wrong
     }
-
+  
     // async with promises
     findAuthor().catch(function(reason){
       // something went wrong
     });
     ```
-
+  
     @method catch
     @param {Function} onRejection
     Useful for tooling.
@@ -55310,7 +55310,7 @@ module.exports = g;
         //Therefore if iOS, we shall assume that PDF support is not available
         !isIOS && (
             //Modern versions of Firefox come bundled with PDFJS
-            isFirefoxWithPDFJS ||
+            isFirefoxWithPDFJS || 
             //Browsers that still support the original MIME type check
             supportsPdfMimeType || (
                 //Pity the poor souls still using IE
@@ -66180,7 +66180,7 @@ module.exports = localforage_js;
 "use strict";var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol?"symbol":typeof obj};(function(f){if((typeof exports==="undefined"?"undefined":_typeof(exports))==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Url=f()}})(function(){var define,module,exports;return function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++){s(r[o])}return s}({1:[function(require,module,exports){window.addEventListener("popstate",function(e){Url.triggerPopStateCb(e)});var Url=module.exports={_onPopStateCbs:[],_isHash:false,queryString:function queryString(name,notDecoded){name=name.replace(/[\[]/,"\\[").replace(/[\]]/,"\\]");var regex=new RegExp("[\\?&]"+name+"=([^&#]*)"),results=regex.exec(location.search),encoded=null;if(results===null){regex=new RegExp("[\\?&]"+name+"(\\&([^&#]*)|$)");if(regex.test(location.search)){return true}return undefined}else{encoded=results[1].replace(/\+/g," ");if(notDecoded){return encoded}return decodeURIComponent(encoded)}},parseQuery:function parseQuery(search){var query={};if(typeof search!=="string"){search=window.location.search}search=search.replace(/^\?/g,"");if(!search){return{}}var a=search.split("&"),i=0,iequ,value=null;for(;i<a.length;++i){iequ=a[i].indexOf("=");if(iequ<0){iequ=a[i].length;value=true}else{value=decodeURIComponent(a[i].slice(iequ+1))}query[decodeURIComponent(a[i].slice(0,iequ))]=value}return query},stringify:function stringify(queryObj){if(!queryObj||queryObj.constructor!==Object){throw new Error("Query object should be an object.")}var stringified="";Object.keys(queryObj).forEach(function(c){var value=queryObj[c];stringified+=c;if(value!==true){stringified+="="+encodeURIComponent(queryObj[c])}stringified+="&"});stringified=stringified.replace(/\&$/g,"");return stringified},updateSearchParam:function updateSearchParam(param,value,push,triggerPopState){var searchParsed=this.parseQuery();if(value===undefined){delete searchParsed[param]}else{if(searchParsed[param]===value){return Url}searchParsed[param]=value}var newSearch="?"+this.stringify(searchParsed);this._updateAll(window.location.pathname+newSearch+location.hash,push,triggerPopState);return Url},getLocation:function getLocation(){return window.location.pathname+window.location.search+window.location.hash},hash:function hash(newHash,triggerPopState){if(newHash===undefined){return location.hash.substring(1)}if(!triggerPopState){setTimeout(function(){Url._isHash=false},0);Url._isHash=true}return location.hash=newHash},_updateAll:function _updateAll(s,push,triggerPopState){window.history[push?"pushState":"replaceState"](null,"",s);if(triggerPopState){Url.triggerPopStateCb({})}return s},pathname:function pathname(_pathname,push,triggerPopState){if(_pathname===undefined){return location.pathname}return this._updateAll(_pathname+window.location.search+window.location.hash,push,triggerPopState)},triggerPopStateCb:function triggerPopStateCb(e){if(this._isHash){return}this._onPopStateCbs.forEach(function(c){c(e)})},onPopState:function onPopState(cb){this._onPopStateCbs.push(cb)},removeHash:function removeHash(){this._updateAll(window.location.pathname+window.location.search,false,false)},removeQuery:function removeQuery(){this._updateAll(window.location.pathname+window.location.hash,false,false)},version:"2.3.1"}},{}]},{},[1])(1)});
 ;
 /****************************************************************************
-    url.js-extensions.js,
+    url.js-extensions.js, 
 
     (c) 2016, FCOO
 
@@ -66209,13 +66209,13 @@ module.exports = localforage_js;
     //Overwrite Url._updateAll to handle Security Error in Safari on Mac that prevent more that 100 history updates in 30 sec
     window.Url._updateAll = function(s, push, triggerPopState) {
         try {
-            window.history[push ? "pushState" : "replaceState"](null, "", s);
+            window.history[push ? "pushState" : "replaceState"](null, "", s);          
         }
         catch (e) {
-            //Use 'old' methods - perhaps it will reload the page
+            //Use 'old' methods - perhaps it will reload the page 
             window.location.replace( s );
         }
-
+        
         if (triggerPopState) {
             window.Url.triggerPopStateCb({});
         }
@@ -66225,7 +66225,7 @@ module.exports = localforage_js;
 
     /******************************************
     anyString(name, notDecoded, search, sep)
-    Copy of Url.queryString with optional input string (search)
+    Copy of Url.queryString with optional input string (search) 
     and separaator (sep)
     ******************************************/
     function anyString(name, notDecoded, search, sep){
@@ -66255,7 +66255,7 @@ module.exports = localforage_js;
     /******************************************
     _correctSearchOrHash
     Check and correct search or hash = ID_VALUE[&ID_VALUE]
-        ID_VALUE =
+        ID_VALUE = 
             ID or
             ID=VALUE or
             ID=VALUE,VALUE2,...,VALUEN
@@ -66265,10 +66265,10 @@ module.exports = localforage_js;
     function _correctSearchOrHash( str, preChar ){
         function decodeStr( str ){
             try {
-                decodeURIComponent( str );
-                return decodeURIComponent( str );
+                decodeURIComponent( str ); 
+                return decodeURIComponent( str ); 
             }
-            catch(err) {
+            catch(err) { 
                 return undefined;
             }
         }
@@ -66294,12 +66294,12 @@ module.exports = localforage_js;
         while (preChar && str.length && (str.charAt(0) == preChar) )
             str = str.slice(1);
 
-        strList = str.split('&');
+        strList = str.split('&'); 
 
         for (i=0; i<strList.length; i++ ){
             idValues = strList[i].split('=');
             id = decodeStr( idValues[0] );
-            values = idValues[1] || undefined;
+            values = idValues[1] || undefined; 
             oneValueOk = false;
             if ( id && (idRegEx.exec(id) == id ) ){
                 //Correct id
@@ -66326,7 +66326,7 @@ module.exports = localforage_js;
                     var firstValue = true;
                     for (j=0; j<valueList.length; j++ ){
                         value = valueList[j];
-                        result += (firstValue ? '=' : ',') + (value ? value : '');
+                        result += (firstValue ? '=' : ',') + (value ? value : ''); 
                         firstValue = false;
                     }
                 }
@@ -66340,30 +66340,30 @@ module.exports = localforage_js;
     adjustUrl
     Check and correct the url
     *******************************************/
-    function adjustUrl(){
+    function adjustUrl(){ 
         var oldSearch = window.location.search,
             newSearch = this._correctSearchOrHash( oldSearch, '?' ),
             oldHash   = window.location.hash,
             newHash   = this._correctSearchOrHash( oldHash, '#' ),
-            newUrl    = window.location.pathname +
-                          (newSearch ? '?' + encodeURI(newSearch) : '') +
+            newUrl    = window.location.pathname +  
+                          (newSearch ? '?' + encodeURI(newSearch) : '') + 
                           (newHash   ? '#' + encodeURI(newHash)   : '');
 
-        this._updateAll( newUrl );
+        this._updateAll( newUrl );          
         return newUrl;
     }
 
     /******************************************
     onHashchange( handler [, context])
     Add handler = function( event) to the event "hashchange"
-    Can by omitted if the hash-tag is updated using
+    Can by omitted if the hash-tag is updated using 
     Url.updateHashParam(..) or Url.updateHash(..)
     *******************************************/
     function onHashchange( handler, context ){
         this.hashchange = this.hashchange || [];
         this.hashchange.push( $.proxy(handler, context) );
     }
-
+   
     /******************************************
     hashString
     Same as queryString but for the hash
@@ -66372,19 +66372,19 @@ module.exports = localforage_js;
     function hashString(name, notDecoded){
         return anyString(name, notDecoded, window.location.hash, '#');
     }
-
+    
     /******************************************
     parseHash
     Same as parseQuery but for the hash
     *******************************************/
     function parseHash(){
-        return this.parseQuery( this.hash() );
+        return this.parseQuery( this.hash() );    
     }
 
     /******************************************
     updateHash(hashObj, dontCallHashChange)
     Update hash-tag with the id-value in hashObj
-    If dontCallHashChange==true the hashchange-event-functions
+    If dontCallHashChange==true the hashchange-event-functions 
     added with Url.onHashchange( function[, context]) will not be called
     *******************************************/
     function updateHash(hashObj, dontCallHashChange){
@@ -66394,11 +66394,11 @@ module.exports = localforage_js;
         //return window.location.hash = '#'+newHash;
         return this._updateAll(window.location.pathname + window.location.search + '#' + newHash, false);
     }
-
+     
     /******************************************
     updateHashParam
     Adds, updates or deletes a hash-tag
-    If dontCallHashChange==true the hashchange-event-functions
+    If dontCallHashChange==true the hashchange-event-functions 
     added with Url.onHashchange( function[, context]) will not be called
     *******************************************/
     function updateHashParam(hashParam, value, dontCallHashChange){
@@ -66430,7 +66430,7 @@ module.exports = localforage_js;
             if ($.type( jsonObj ) == 'object')
                 return true;
         }
-        catch (e) {
+        catch (e) { 
             return false;
         }
         return false;
@@ -66439,7 +66439,7 @@ module.exports = localforage_js;
     function validateValue( value, validator ){
         //Convert Boolean into String
         if ($.type( value ) === "boolean")
-            value = value ? 'true' : 'false';
+            value = value ? 'true' : 'false';  
         value = value || '';
 
         if (validator === undefined)
@@ -66464,11 +66464,11 @@ module.exports = localforage_js;
             case 'NOTEMPTY': validator = /.+/;                   break;
 
             //Special case for json-object-string
-            case 'JSON'    : return validateValue( value, validateJSONValue);
+            case 'JSON'    : return validateValue( value, validateJSONValue); 
         }
 
         var regExp = new RegExp(validator),
-            execResult = regExp.exec(value);
+            execResult = regExp.exec(value); 
         return !!(execResult && (execResult.length == 1) && (execResult[0] == value));
     }
 
@@ -66478,26 +66478,26 @@ module.exports = localforage_js;
     Parse obj after it is validated and converted acording to
     validatorObj, defaultObj, and options
 
-    validatorObj: object with {id: validator,..}. Failed values are removed
-    defaultObj  : object with {id: value}. Values to be used if `id` is missing or fails validation
+    validatorObj: object with {id: validator,..}. Failed values are removed 
+    defaultObj  : object with {id: value}. Values to be used if `id` is missing or fails validation 
     options: {
         convertBoolean: Boolean (default = true ) If true all values == "true" or "false" are converted into Boolean
         convertNumber : Boolean (default = true ) If true all values representing a number is converted to float
         convertJSON   : Boolean (default = true ) If true all values representing a stringify json-object is converted to a real json-object
-        queryOverHash : Boolean (default = true ) If true and the same id is given in both query-string and hash-tag the value from query-string is returned.
+        queryOverHash : Boolean (default = true ) If true and the same id is given in both query-string and hash-tag the value from query-string is returned. 
                                                   If false the value from hash-tag is returned
     }
     *******************************************/
     function _parseObject( obj, validatorObj, defaultObj, options ){
-        validatorObj = validatorObj || {};
-        defaultObj = defaultObj || {};
-        options = $.extend( {}, options, {
-            convertBoolean: true,
-            convertNumber : true,
+        validatorObj = validatorObj || {}; 
+        defaultObj = defaultObj || {}; 
+        options = $.extend( {}, options, { 
+            convertBoolean: true, 
+            convertNumber : true, 
             convertJSON   : true,
-            queryOverHash : true
-        });
-
+            queryOverHash : true 
+        }); 
+        
         var _this = this;
 
         //Validate all values
@@ -66505,20 +66505,20 @@ module.exports = localforage_js;
             //Convert '+' to space
             if ( $.type(value) == 'string' )
                 value = value.replace(/\+/g, " ");
-
+            
             //Validate value
             if ( !_this.validateValue( value, validatorObj[id] ) )
-                value = undefined;
+                value = undefined; 
 
             //Convert "true" and false" to Boolean
             if ( options.convertBoolean && ( (value == 'true') || (value == 'false') ) )
               value = (value == 'true');
-
+                
             //Convert String to Float
             if (options.convertNumber && _this.validateValue( value, 'NUMBER') ){
                 value = parseFloat( value );
             }
-
+                
             //Remove deleted keys
             if (value === undefined)
                 delete obj[id];
@@ -66531,8 +66531,8 @@ module.exports = localforage_js;
             $.each( obj, function( id, value ){
                 if ( _this.validateValue( value, 'JSON') )
                     obj[id] = JSON.parse( value );
-            });
-
+            });        
+        
         //Insert default values
         $.each( defaultObj, function( id, value ){
             if (obj[id] === undefined)
@@ -66552,7 +66552,7 @@ module.exports = localforage_js;
         var _this = this,
             queryOverHash = options ? !!options.queryOverHash : true;
 
-        function parseObj( str ){
+        function parseObj( str ){ 
             var obj = _this.parseQuery( str );
 
             //Use anyString(..) to get adjusted value
@@ -66560,14 +66560,14 @@ module.exports = localforage_js;
                 obj[id] = anyString(id, false, '?'+str, '?');
             });
 
-            return _this._parseObject( obj, validatorObj, defaultObj, options );
+            return _this._parseObject( obj, validatorObj, defaultObj, options ); 
         }
 
         var queryObj = parseObj( this._correctSearchOrHash( window.location.search, '?' ) ),
             hashObj  = parseObj( this._correctSearchOrHash( window.location.hash,   '#' ) );
 
-        return $.extend( queryOverHash ? hashObj  : queryObj,
-                         queryOverHash ? queryObj : hashObj   );
+        return $.extend( queryOverHash ? hashObj  : queryObj, 
+                         queryOverHash ? queryObj : hashObj   ); 
     }
 
     /******************************************
@@ -66616,11 +66616,11 @@ module.exports = localforage_js;
 
 
     /******************************************
-    Initialize/ready
+    Initialize/ready 
     *******************************************/
-    $(function() {
+    $(function() { 
         window.Url.adjustUrl();
-    });
+    }); 
     //******************************************
 
 
@@ -66629,14 +66629,14 @@ module.exports = localforage_js;
 
 /******************************************
 Variables in window.location making up the full url
-
+    
 var newURL = window.location.protocol + "//" + window.location.host + "/" + window.location.pathname + window.location.search + window.location.hash;
 
 window.location.protocol
 window.location.host
 window.location.pathname
-window.location.search
-window.location.hash
+window.location.search 
+window.location.hash 
 
 ******************************************/
 
@@ -66723,11 +66723,9 @@ window.location.hash
             $.each(options, function(index, settingOptions){
                 settingOptions = $.extend( {}, { callApply: true }, settingOptions );
                 var setting = new ns.Setting( settingOptions );
+                setting.group = _this;
                 _this.settings[settingOptions.id] = setting;
-
-//HER                //If data is loaded => apply (else wait for data to be loaded)
-//HER                if (_this.dataLoaded)
-                    setting.apply( _this.data[setting.options.id], !options.callApply );
+                setting.apply( _this.data[setting.options.id], !options.callApply );
             });
         },
 
@@ -66745,7 +66743,6 @@ window.location.hash
         Load data from this.store with item-id and update (apply) all Setting
         ***********************************************/
         load: function( id ){
-//HER            this.dataLoaded = false;
             this.loadData(id, $.proxy(this.onLoad, this));
         },
 
@@ -66755,7 +66752,6 @@ window.location.hash
         onLoad: function(data){
             var _this = this;
             $.extend(this.data, data);
-//HER            this.dataLoaded = true;
 
             //Apply data to the Setting
             $.each( this.settings, function( id, setting ){
@@ -66874,15 +66870,14 @@ window.location.hash
                 });
 
                 this.modalForm = $.bsModalForm({
-                    id      : this.options.storeId,
-                    show    : false,
-                    header  : this.options.modalHeader,
-                    content : {type: 'accordion', list: list },
-
+                    id        : this.options.storeId,
+                    show      : false,
+                    header    : this.options.modalHeader,
+                    flexWidth : true,
+                    content   : {type: 'accordion', list: list },
                     onChanging: $.proxy(this.onChanging, this),
                     onCancel  : $.proxy(this.onCancel,   this),
-                    onSubmit  : $.proxy(this.onSubmit,   this),
-flexWidth: true,
+                    onSubmit  : $.proxy(this.onSubmit,   this)
                 });
             }
 
@@ -66958,17 +66953,24 @@ flexWidth: true,
         }
     };
 
+
+
+
+
     /*******************************************************************************
     ********************************************************************************
     Setting( options )
-    options = {id, validator, applyFunc, defaultValue, globalEvents )
-    id [String]
-    validator [null] | [String] | [function( value)]. If [String] => using Url.js-extensions validation
-    applyFunc [function( value, id, defaultValue )] function to apply the settings for id
-    defaultValue
-    globalEvents {String} = Id of global-events in fcoo.events that aare fired when the setting is changed
-    onError [function( value, id )] (optional). Called if a new value is invalid according to validator
-    saveOnChanging [BOOLEAN]. If true the setting is saved during editing. When false the setting is only saved when edit-form submits
+    options =
+        id [String]
+        validator [null] | [String] | [function( value)]. If [String] => using Url.js-extensions validation
+        applyFunc [function( value, id, defaultValue )] function to apply the settings for id
+        defaultValue
+        globalEvents {String} = Id of global-events in fcoo.events that aare fired when the setting is changed
+        onError [function( value, id )] (optional). Called if a new value is invalid according to validator
+        saveOnChanging [BOOLEAN]. If true the setting is saved during editing. When false the setting is only saved when edit-form submits
+        modernizr BOOLEAN` (optional) default=false: If true the modernizr-class descriped in `src\_fcoo-settings.scss` is updated
+        modernizrOnlyValues []ID: List of the only values that are modernizr'ed. If empty all values are modernizr
+
     ********************************************************************************
     ********************************************************************************/
     function Setting( options ) {
@@ -66989,7 +66991,8 @@ flexWidth: true,
     //Extend the prototype
     ns.Setting.prototype = {
         apply:  function ( newValue, dontCallApplyFunc ){
-            var id = this.options.id;
+            var _this = this,
+                id = this.options.id;
             newValue = (newValue === undefined) ? this.options.defaultValue : newValue;
 
             if ( !window.Url.validateValue(''+newValue, this.options.validator) ){
@@ -67002,6 +67005,37 @@ flexWidth: true,
 
             if (!dontCallApplyFunc)
                 this.options.applyFunc( this.value, id, this.options.defaultValue );
+
+            //Update modernizr-classes (if any)
+            //The modernizr-class is given from this.group.modernizrPrefix plus the id of setting plus the value (if not boolean)
+            //Eq. In global-setting a Setting with id = "setting2" has the value "value3" =>
+            //modernizr is on for "global-setting-setting2-value3" and off for all other classes with prefix "global-setting-setting2-[VALUE])
+            if (this.options.modernizr){
+                var modernizr = {}; //={ID:BOOLEAN}
+                if ($.type(this.value) == 'boolean')
+                    //Value is boolean => just set simgle modernizr-class = this.global-setting-[ID]
+                    modernizr[id] = this.value;
+                else {
+                    //Find list of possible values in modal-content
+                    var modalContent = {};
+                    $.each(this.group.modalContent, function(groupId, contentList){
+                        $.each(contentList, function(index, content){
+                            if (content.id == id){
+                                modalContent = content;
+                                return false;
+                            }
+                        });
+                    });
+                    $.each(modalContent.list || modalContent.items || [], function(index, contentPart){
+                        if (!_this.options.modernizrOnlyValues || (_this.options.modernizrOnlyValues.indexOf(contentPart.id) != -1))
+                            modernizr[id+'-'+contentPart.id] = !!(newValue == contentPart.id);
+                    });
+                }
+                //Updaet modernizr-classes
+                $.each(modernizr, function(id, on){
+                    window.modernizrToggle( _this.group.options.modernizrPrefix + id, on );
+                });
+            }
 
             //Fire global-events (if any)
             if (this.options.globalEvents && ns.events && ns.events.fire)
@@ -67028,6 +67062,7 @@ flexWidth: true,
             storeId : 'GLOBAL',
             data    : localStorageData,
             autoSave: true,
+            modernizrPrefix: 'global-setting-',
 
             modalHeader: {
                 icon: 'fa-cog',
@@ -68018,7 +68053,7 @@ flexWidth: true,
         }
     });
 
-
+    
 
 (function() {
         numeral.register('format', 'bps', {
@@ -70321,7 +70356,7 @@ Set methodes and options for format utm
 }(this.i18next, this.Promise, this, document));
 ;
 /****************************************************************************
-	jQuery.i18nLink.js,
+	jQuery.i18nLink.js, 
 
 	(c) 2017, FCOO
 
@@ -70342,11 +70377,11 @@ Set methodes and options for format utm
         return  $('<a/>')
                     .i18n('link:'+key, 'href', {defaultValue: null})
                     .i18n('name:'+key, 'title')
-                    .append(
+                    .append( 
                         $('<span/>')
-                            .i18n('abbr:'+key, {defaultValue: key.toUpperCase()} )
+                            .i18n('abbr:'+key, {defaultValue: key.toUpperCase()} ) 
                     );
-
+                     
     };
 
 
@@ -70971,18 +71006,11 @@ Greenland
                         'date'              : ns.globalSetting.get('date'),
                         'time'              : ns.globalSetting.get('time'),
                         'timezone'          : ns.globalSetting.get('timezone'),
-                        '_fcoo_showrelative': ns.globalSetting.get('showrelative'),
-                        '_fcoo_showutc'     : ns.globalSetting.get('showutc'),
                     },
-                    options );
+                    $.isPlainObject(options) ? options : {} );
 
         //Update moment-formats
         moment.sfSetFormat( options );
-
-        //Update modernizr-test
-        window.modernizrToggle( 'showrelative', options._fcoo_showrelative );
-        window.modernizrToggle( 'showutc',      options._fcoo_showutc );
-        window.modernizrToggle( 'timezoneutc',  options.timezone == 'utc');
 
         //Fire global event
         ns.events.fire(ns.events.DATETIMEFORMATCHANGED);
@@ -70995,7 +71023,6 @@ Greenland
         applyFunc   : function( date ){ momentSimpleFormatSetFormat({ 'date': date });       },
         defaultValue: 'DMY',
         callApply   : false,
-        globalEvents: ns.events.DATETIMEFORMATCHANGED
     });
     ns.globalSetting.add({
         id          : 'time',
@@ -71003,7 +71030,6 @@ Greenland
         applyFunc   : function( time ){ momentSimpleFormatSetFormat({ 'time': time }); },
         defaultValue: '24',
         callApply   : false,
-        globalEvents: ns.events.DATETIMEFORMATCHANGED
     });
     ns.globalSetting.add({
         id          : 'timezone',
@@ -71011,23 +71037,24 @@ Greenland
         applyFunc   : function( timezone ){ momentSimpleFormatSetFormat({ 'timezone': timezone }); },
         defaultValue: 'local',
         callApply   : false,
-        globalEvents: ns.events.TIMEZONECHANGED
+        globalEvents: ns.events.TIMEZONECHANGED,
+        modernizr   : true,
+        modernizrOnlyValues: ['utc', 'local']
+
     });
     ns.globalSetting.add({
         id          : 'showrelative',
-        validator   : function( showrelative ){ return jQuery.type( showrelative ) === "boolean";                    },
-        applyFunc   : function( showrelative ){ momentSimpleFormatSetFormat({ '_fcoo_showrelative': showrelative }); },
         defaultValue: false,
         callApply   : false,
-        globalEvents: ns.events.DATETIMEFORMATCHANGED
+        globalEvents: ns.events.DATETIMEFORMATCHANGED,
+        modernizr   : true
     });
     ns.globalSetting.add({
         id          : 'showutc',
-        validator   : function( showutc ){ return jQuery.type( showutc ) === "boolean";               },
-        applyFunc   : function( showutc ){ momentSimpleFormatSetFormat({ '_fcoo_showutc': showutc }); },
         defaultValue: false,
         callApply   : false,
-        globalEvents: ns.events.DATETIMEFORMATCHANGED
+        globalEvents: ns.events.DATETIMEFORMATCHANGED,
+        modernizr   : true
     });
 
     //Also fire "datetimeformatchanged" when the language or the time zone is changed
@@ -71054,7 +71081,6 @@ Greenland
 
 
     //Date and Time format
-//       var content = [], items = [];
     var lastDate = moment().month(11).date(31),
         dateFormat = {weekday:'None', month: 'Short', year: 'Full'};
 
@@ -71101,22 +71127,12 @@ Greenland
                 }
             ]
         }
-
-
-
     ]);
-
-    //Initialize/ready
-	$(function() {
-
-	});
-
-
 
 }(jQuery, window.moment, window.i18next, this, document));
 ;
 /****************************************************************************
-    kl.js,
+    kl.js, 
 
     Translation of Moment text to Kalaallisut/Greenlandic (language code = kl)
 
@@ -71124,7 +71140,7 @@ Greenland
 
 moment.defineLocale('kl', {
     parentLocale: 'da',
-
+  
     /* TODO */
 
 
@@ -71426,8 +71442,8 @@ ns.unit.METRIC  : 'METRIC',    //m, m2, m/s
             type: 'radiobuttongroup',
             label: {icon:'fa-compass', text:{da:'Retning', en:'Direction'}},
             items: [
-                {id: ns.unit.DEGREE,  text: {da:'Grader (0-360)',   en:'Degree (0-360)' }},
-                {id: ns.unit.GRADIAN, text: {da:'Nygrader (0-400)', en:'Gradian (0-400)'}}
+                {id: ns.unit.DEGREE,  text: {da:'Grader (0-360<sup>o</sup>)',   en:'Degree (0-360<sup>o</sup>)' }},
+                {id: ns.unit.GRADIAN, text: {da:'Nygrader (0-400<sup>g</sup>)', en:'Gradian (0-400<sup>g</sup>)'}}
             ]
         }
     ]);

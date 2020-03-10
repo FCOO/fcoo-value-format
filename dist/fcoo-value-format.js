@@ -81,6 +81,14 @@
     *************************************/
     setGlobalEvent( ns.events.UNITCHANGED );
 
+    ns._globalSetting_edit_UNITCHANGED = function(){
+        ns.globalSetting.edit(ns.events.UNITCHANGED);
+    };
+
+    function unitWithLink(unitStr, withLink){
+        return withLink ? '<a href="javascript:fcoo._globalSetting_edit_UNITCHANGED()">' + unitStr + '</a>' : unitStr;
+    }
+
     //length
     addFormat({
         id    : 'length',
@@ -100,12 +108,16 @@
                 else
                     nrOfDigits = 0;
             }
-            return ns.number.numberFixedWidth(
-                ns.unit.getLength( value ),
-                nrOfDigits,
-                removeTrailingZeros
-            ) + '&nbsp;' + unitStr;
+            return ns.number.numberFixedWidth(ns.unit.getLength( value ), nrOfDigits, removeTrailingZeros) + '&nbsp;' + unitWithLink(unitStr, options && options.withUnitLink);
 
+        }
+    });
+
+    //length unit
+    addFormat({
+        id    : 'length_unit',
+        format: function(){
+            return unitWithLink(ns.globalSetting.get('length') == ns.unit.NAUTICAL ? 'nm' : 'km', true);
         }
     });
 
@@ -132,8 +144,16 @@
                 ns.unit.getArea( value ),
                 nrOfDigits,
                 removeTrailingZeros
-            ) + '&nbsp;' + unitStr + '<sup>2</sup>';
+            ) + '&nbsp;' + unitWithLink(unitStr + '<sup>2</sup>', options && options.withUnitLink);
 
+        }
+    });
+
+    //area unit
+    addFormat({
+        id    : 'area_unit',
+        format: function(){
+            return unitWithLink((ns.globalSetting.get('area') == ns.unit.NAUTICAL ? 'nm' : 'km')+'<sup>2</sup>', true);
         }
     });
 
@@ -148,7 +168,23 @@
                 case ns.unit.GRADIAN: unitStr = '<sup>g</sup>'; break; //or <sup>c</sup> or <sup>R</sup>
             }
 
-            return formatNumber(ns.unit.getDirection( value ), options ) +  unitStr;
+            return formatNumber(ns.unit.getDirection( value ), options ) +  unitWithLink(unitStr, options.withUnit);
+        }
+    });
+
+    //speed and direction unit - also updated on language changed
+    setGlobalEvent( ns.events.UNITCHANGED + ' ' + ns.events.LANGUAGECHANGED );
+
+    //direction unit
+    addFormat({
+        id    : 'direction_unit',
+        format: function(){
+            var unitStr;
+            switch (ns.globalSetting.get('direction')){
+                case ns.unit.DEGREE : unitStr = window.i18next.sentence({ da:'Grader (0-360<sup>o</sup>)',   en:'Degree (0-360<sup>o</sup>)'  }); break;
+                case ns.unit.GRADIAN: unitStr = window.i18next.sentence({ da:'Nygrader (0-400<sup>g</sup>)', en:'Gradian (0-400<sup>g</sup>)' }); break;
+            }
+            return unitWithLink(unitStr, true);
         }
     });
 
@@ -165,7 +201,20 @@
                 case ns.unit.NAUTICAL: unitStr = 'kn'; break; //window.i18next.sentence( {da:'knob', en:'knots'}); break;
             }
 
-            return ns.number.numberFixedWidth(ns.unit.getSpeed( value ), 3, removeTrailingZeros) + '&nbsp;' + unitStr;
+            return ns.number.numberFixedWidth(ns.unit.getSpeed( value ), 3, removeTrailingZeros) + '&nbsp;' + unitWithLink(unitStr, options && options.withUnitLink);
+        }
+    });
+    //Speed unit
+    addFormat({
+        id    : 'speed_unit',
+        format: function(){
+            var unitStr = '';
+            switch (ns.globalSetting.get('speed')){
+                case ns.unit.METRIC  : unitStr = 'm/s'; break;
+                case ns.unit.METRIC2 : unitStr = window.i18next.sentence( {da:'km/t', en:'km/h'}); break;
+                case ns.unit.NAUTICAL: unitStr = window.i18next.sentence( {da:'knob', en:'knots'}); break;
+            }
+            return unitWithLink(unitStr, true);
         }
     });
 

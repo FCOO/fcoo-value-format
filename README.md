@@ -73,11 +73,15 @@ For the formats `length`, `area`, and `speed` the output is
 
 | id | input | Output ex. | Options (id/default/description) |
 | :--: | :--: | --- | --- |
-| `number`| `{number}` | `"1,000.123"` | `decimals` / `2` / Number of decimals. If the number is a integer no decimals are displayed<br>`format`, `"0,0[.]00"`, The [numeral.js] format used |
-| `length`| `{number}` | `"12.3 nm"` | `removeTrailingZeros` / `true` / Convert input as meter to m, km or nm according to the setting `length` using `numberFixedWidth` |
-| `area`| `{number}` | `"1234 m2"` | `removeTrailingZeros` / `true` / Convert input as square meter to m2, km2 or nm2 according to the setting `area` using `numberFixedWidth` |
+| `number`| `{number}` | `"1,000.123"` | `decimals` / `2` / Number of decimals. If the number is a integer no decimals are displayed<br>`format`, `"0,0[.]00"`, The [numeral.js] format used.|
+| `length`| `{number}` | `"12.3 nm"` | `removeTrailingZeros` / `true` / Convert input as meter to m, km or nm according to the setting `length` using `numberFixedWidth`<br><br>`withUnitLink` / `false` / If `true` the unit contain a link to `globalSetting.edit` |
+| `area`| `{number}` | `"1234 m2"` | `removeTrailingZeros` / `true` / Convert input as square meter to m2, km2 or nm2 according to the setting `area` using `numberFixedWidth`<br><br>`withUnitLink` (see above)  |
 | `speed`| `{number}` | `"12.3 km/h"` | `removeTrailingZeros` / `true` / Convert input as speed (m/s) to m/s, km/h or knots according to the setting `speed` using `numberFixedWidth` |
-| `direction`| `{number}` | `"380 rad"` | Convert input as direction (0-360) to direction or radian (0-400) according to the setting `direction` |
+| `direction`| `{number}` | `"380 rad"` | Convert input as direction (0-360) to direction or radian (0-400) according to the setting `direction`<br><br>`withUnitLink` (see above)  |
+| `length_unit`| `none` | `"nm"` | Return the current length-unit with a link to `globalSetting.edit` |
+| `area_unit`| `none` | `"nm2"` | Return the current area-unit with a link to `globalSetting.edit` |
+| `speed_unit`| `none` | `"km/h"` | Return the current speed-unit with a link to `globalSetting.edit` |
+| `direction_unit`| `none` | `"Degree (0-360)'"` | Return the current direction-unit with a link to `globalSetting.edit` |
 | `latlng` | `[lat, lng]` | `"55°07'11.9"N 13°07'22.7"E"` | `separator` / `" "` / Text or html-code between the lat and lng. E.g. `"<br>"` |
 | `time` | `moment/string` | `"14:00"` | |
 | `hour` | `moment/string` | `"14"` | |
