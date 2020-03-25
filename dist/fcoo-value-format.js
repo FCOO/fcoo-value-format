@@ -224,7 +224,7 @@
     LATLNG
     **************************************
     *************************************/
-    setGlobalEvent( ns.events.LATLNGFORMATCHANGED );
+    setGlobalEvent( ns.events.LATLNGFORMATCHANGED + ' ' + ns.events.NUMBERFORMATCHANGED );
 
     /*************************************
     formatId = latlng
