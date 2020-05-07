@@ -126,8 +126,11 @@ For the formats `length`, `area`, and `speed` the output is
 | `timezone` | `moment/string` | `"Europe/Copenhagen"` | |
 | `timezone_full` | `moment/string` | `"Europe/Copenhagen (UTC+01:00)"` | |
 | `relative` | `moment/string` | `"now+2d3h"` | |
+| `relative_m` | `moment/string` | `"now+3070m"` | |
 | `relative_h` | `moment/string` | `"now+51h"` | |
+| `relative_d` | `moment/string` | `"now+2d"` | |
 | `relative_hm` | `moment/string` | `"now+51h10m"` | |
+| `relative_dh` | `moment/string` | `"now+2d3h"` | |
 | `relative_dhm` | `moment/string` | `"now+2d3h10m"` | |
 
 ### Input to date- and time-formats

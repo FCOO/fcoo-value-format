@@ -370,6 +370,16 @@
     formatId = relative_XX
     *************************************/
     function momentRelativeFormat( m, format ){
+        function formatContain(char){ return format.indexOf(char) > -1; }
+        return m.relativeFormat({
+            relativeFormat: {
+                now     : true,
+                days    : formatContain('D'),
+                hours   : formatContain('H'),
+                minutes : formatContain('M')
+            }
+        });
+/*
         var options = {};
         switch (format){
           case 'H'  : options.relativeFormat = {now: true, days: false, hours: true, minutes: false }; break;
@@ -378,12 +388,15 @@
           default   : options.relativeFormat = {now: true, days: true,  hours: true, minutes: false };
         }
         return m.relativeFormat( options );
+*/
     }
 
     addMomentFormat( 'relative',     function( m ){ return momentRelativeFormat( m, 'DH'  ); } );
-    addMomentFormat( 'relative_dh',  function( m ){ return momentRelativeFormat( m, 'DH'  ); } );
+    addMomentFormat( 'relative_m',   function( m ){ return momentRelativeFormat( m, 'M'   ); } );
     addMomentFormat( 'relative_h',   function( m ){ return momentRelativeFormat( m, 'H'   ); } );
+    addMomentFormat( 'relative_d',   function( m ){ return momentRelativeFormat( m, 'D'   ); } );
     addMomentFormat( 'relative_hm',  function( m ){ return momentRelativeFormat( m, 'HM'  ); } );
+    addMomentFormat( 'relative_dh',  function( m ){ return momentRelativeFormat( m, 'DH'  ); } );
     addMomentFormat( 'relative_dhm', function( m ){ return momentRelativeFormat( m, 'DHM' ); } );
 
 
