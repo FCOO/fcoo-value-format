@@ -12,7 +12,7 @@
     <link  href="css/all.css" rel="stylesheet">
     <link  href="bower_components.css" rel="stylesheet">
     <style>
-        .timedate_obj {
+        .timedate_container, .timedate_obj {
             border:1px solid black;
             text-align:center;
             padding:4px;
@@ -75,12 +75,20 @@
     <div class="timedate_obj" data-vf-format="relative_hm"></div>
     <div class="timedate_obj" data-vf-format="relative_dh"></div>
     <div class="timedate_obj" data-vf-format="relative_dhm"></div>
+    <br>
+    <h2>time_XX_sup</h2>
+    <div class="timedate_container"><span>time_utc_sup</span>&nbsp;<span class="timedate_obj" data-vf-format="time_utc_sup"></span></div>
+    <div class="timedate_container"><span>time_now_sup</span>&nbsp;<span class="timedate_obj" data-vf-format="time_now_sup"></span></div>
+    <div class="timedate_container"><span>time_other_sup (now-34h)</span>&nbsp;<span id="other" class="timedate_obj" data-vf-format="time_other_sup"></span></div>
 
-    <button id="update_moment">Click to add 63 min</button>
+    <br><button id="update_moment">Click to add 63 min</button>
 
     <script src="bower_components.js"></script>
 	<script src="../src/fcoo-value-format.js"></script>
 	<script>
+        $('#other').vfOptions({other:moment().add(-34, 'h')});
+
+
         window.bsIsTouch = false;
         window.bsIsTouch = (window.location.search =='?touch');
         i18next.init();

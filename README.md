@@ -132,6 +132,12 @@ For the formats `length`, `area`, and `speed` the output is
 | `relative_hm` | `moment/string` | `"now+51h10m"` | |
 | `relative_dh` | `moment/string` | `"now+2d3h"` | |
 | `relative_dhm` | `moment/string` | `"now+2d3h10m"` | |
+| `time_utc_sup` | `moment/string` | `"05:33<sup>+1</sup>"` | time of utc with sup of day-different from moment in current timezone |
+| `time_now_sup` | `moment/string` | `"05:33<sup>+1</sup>"` | time of current tz with sup of day-different to now (same tz) |
+| `time_other_sup` | `moment/string` | `"05:33<sup>+1</sup>"` | time of current tz with sup of day-different to another moment given in options.other (same tz) |
+
+
+
 
 ### Input to date- and time-formats
 All formats for time or date takes input as moment-object or as string with the time/date as ISO 8601 format
