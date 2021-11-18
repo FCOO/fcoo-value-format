@@ -89,37 +89,53 @@
         return withLink ? '<a href="javascript:fcoo._globalSetting_edit_UNITCHANGED()">' + unitStr + '</a>' : unitStr;
     }
 
-    //length
-    addFormat({
-        id    : 'length',
-        format: function( value, options ){
-            var nrOfDigits = 3,
+
+    function length_height_format( id, get, value, options ){
+            var nrOfDigits = 0,
                 removeTrailingZeros = options && (typeof options.removeTrailingZeros == 'boolean') ? options.removeTrailingZeros : true,
-                unitStr = 'm';
+                unitStr = length_height_unit(id); //'m';
 
-            if (ns.globalSetting.get('length') == ns.unit.NAUTICAL)
-                unitStr = 'nm';
-            else {
-                //Convert from m to km if >= 1000m
-                if (Math.abs(value) >= 1000){
-                    value = value / 1000;
-                    unitStr = 'km';
-                }
-                else
-                    nrOfDigits = 0;
+            //If unit = m and value > 1000 => convert to km and set digits = 3
+            if ((ns.globalSetting.get(id) == ns.unit.METRIC) && (Math.abs(value) >= 1000)){
+                unitStr = length_height_unit(ns.unit.METRIC2); //'km';
+                value = value / 1000;
+                nrOfDigits = 3;
             }
-            return ns.number.numberFixedWidth(ns.unit.getLength( value ), nrOfDigits, removeTrailingZeros) + '&nbsp;' + unitWithLink(unitStr, options && options.withUnitLink);
 
+            return ns.number.numberFixedWidth(get( value ), nrOfDigits, removeTrailingZeros) + '&nbsp;' + unitWithLink(unitStr, options && options.withUnitLink);
+    }
+
+    function length_height_unit(id){
+        var unit = '';
+        switch (ns.globalSetting.get(id)){
+            case ns.unit.METRIC  : unit =  'm'; break;
+            case ns.unit.METRIC2 : unit = 'km'; break;
+            case ns.unit.FEET    : unit = 'ft'; break;
+            case ns.unit.NAUTICAL: unit = 'nm'; break;
+            default: unit = 'øv';
         }
-    });
+        return unit;
+    }
+
+    function length_height_unit_format(id){
+        return unitWithLink(length_height_unit(id), true);
+    }
+
+
+
+    //length
+    addFormat({id: 'length',        format: function( value, options ){ return length_height_format( 'length', ns.unit.getLength, value, options ); } });
 
     //length unit
-    addFormat({
-        id    : 'length_unit',
-        format: function(){
-            return unitWithLink(ns.globalSetting.get('length') == ns.unit.NAUTICAL ? 'nm' : 'km', true);
-        }
+    addFormat({id: 'length_unit',   format: function(){ return length_height_unit_format('length'); } });
+
+    //height
+    addFormat({id: 'height',        format: function( value, options ){ return length_height_format( 'height', ns.unit.getHeight, value, options ); } });
+
+    //height unit
+    addFormat({id: 'height_unit',   format: function(){ return length_height_unit_format('height'); }
     });
+
 
     //area
     addFormat({

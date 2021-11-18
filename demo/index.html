@@ -36,6 +36,11 @@
     <span>length 1000.123 =>&nbsp;</span><span data-vf-format="length" data-vf-value="1000.123"></span><br>
     <span>length 12345 =>&nbsp;</span><span data-vf-format="length" data-vf-value="12345"></span><br>
 
+    <span>height 234.56 =>&nbsp;</span><span data-vf-format="height" data-vf-value="234.56"></span><br>
+    <span>height 1000.123 =>&nbsp;</span><span data-vf-format="height" data-vf-value="1000.123"></span><br>
+    <span>height 12345 =>&nbsp;</span><span data-vf-format="height" data-vf-value="12345"></span><br>
+
+    
     <span>area 234.56 =>&nbsp;</span><span data-vf-format="area" data-vf-value="234.56"></span><br>
     <span>area 1000.123 =>&nbsp;</span><span data-vf-format="area" data-vf-value="1000.123" data-vf-options='{"decimals":3}'></span><br>
     <span>area 12388813 =>&nbsp;</span><span data-vf-format="area" data-vf-value="12388813"></span><br>
@@ -50,6 +55,7 @@
 
 
     <span>length UNIT =>&nbsp;</span><span data-vf-format="length_unit"></span><br>
+    <span>height UNIT =>&nbsp;</span><span data-vf-format="height_unit"></span><br>
     <span>area UNIT =>&nbsp;</span><span data-vf-format="area_unit"></span><br>
     <span>speed UNIT =>&nbsp;</span><span data-vf-format="speed_unit"></span><br>
     <span>direction UNIT =>&nbsp;</span><span data-vf-format="direction_unit"></span><br>
@@ -149,6 +155,9 @@
             fcoo.globalSetting.edit();
             return false;
         });
+
+
+        fcoo.globalSetting.load();
 
     </script>
 </body>
