@@ -112,7 +112,6 @@
             case ns.unit.METRIC2 : unit = 'km'; break;
             case ns.unit.FEET    : unit = 'ft'; break;
             case ns.unit.NAUTICAL: unit = 'nm'; break;
-            default: unit = 'øv';
         }
         return unit;
     }
@@ -188,6 +187,16 @@
         }
     });
 
+
+    //direction_text
+    addFormat({
+        id    : 'direction_text',
+        format: function( value, options ){
+                    return ns.parameter.directionAsText(value, options && (options.directionFrom || options.from));
+                }
+    });
+
+
     //speed and direction unit - also updated on language changed
     setGlobalEvent( ns.events.UNITCHANGED + ' ' + ns.events.LANGUAGECHANGED );
 
@@ -220,6 +229,7 @@
             return ns.number.numberFixedWidth(ns.unit.getSpeed( value ), 3, removeTrailingZeros) + '&nbsp;' + unitWithLink(unitStr, options && options.withUnitLink);
         }
     });
+
     //Speed unit
     addFormat({
         id    : 'speed_unit',
