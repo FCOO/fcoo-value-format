@@ -76,7 +76,7 @@
 
     /*************************************
     **************************************
-    UNIT (length, area, speed, ddirection)
+    UNIT (length, area, speed, direction)
     **************************************
     *************************************/
     setGlobalEvent( ns.events.UNITCHANGED );
@@ -188,11 +188,27 @@
     });
 
 
+    /****************************************************************************
+    directionAsText
+    Convert a 0-359 direction to N, NNE, NE, ENE, E,...
+    ****************************************************************************/
+    ns.directionText = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW","N"];
+    //Could be in Danish as ["N","NNØ","NØ","ØNØ","Ø","ØSØ","SØ","SSØ","S","SSV","SV","VSV","V","VNV","NV","NNV","N"];
+    //Could be extended to 64: ["N","N t. Ø","NNØ","NØ t. N","NØ","NØ t. Ø","ØNØ","Ø t. N","Ø","Ø t. S","ØSØ","SØ t. Ø","SØ","SØ t. S","SSØ","S t. Ø","S","S t. V","SSV","SV t. S","SV","SV t. V","VSV","V t. S","V","V t. N","VNV","NV t. V","NV","NV t. N","NNV","N t. V","N"]
+
+    var sectionDeg = 360/(ns.directionText.length-1);
+
+    ns.directionAsText = function(direction, directionFrom){
+        direction = (direction + 360 + (directionFrom ? 180 : 0)) % 360;
+        return ns.directionText[Math.round(direction / sectionDeg)];
+    };
+
+
     //direction_text
     addFormat({
         id    : 'direction_text',
         format: function( value, options ){
-                    return ns.parameter.directionAsText(value, options && (options.directionFrom || options.from));
+                    return ns.directionAsText(value, options && (options.directionFrom || options.from));
                 }
     });
 

@@ -1,6 +1,6 @@
 {
   "name": "fcoo-value-format",
-  "version": "3.6.0",
+  "version": "3.7.0",
   "homepage": "https://github.com/FCOO/fcoo-value-format",
   "authors": [
     "Niels Holt"
@@ -20,7 +20,6 @@
     "fcoo-moment": "fcoo/fcoo-moment",
     "jquery-value-format": "fcoo/jquery-value-format#^1.7.0",
     "latlng-format": "fcoo/latlng-format#^3.0.0",
-    "fcoo-parameter-unit": "https://gitlab.com/FCOO/fcoo-parameter-unit.git#^1.7.0",
     "fcoo-unit": "fcoo/fcoo-unit#^1.0.1"
   },
   "devDependencies": {},
