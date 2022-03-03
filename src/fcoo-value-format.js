@@ -90,14 +90,14 @@
     }
 
 
-    function length_height_format( id, get, value, options ){
+    function length_height_format( id, get, value, options = {}){
             var nrOfDigits = 0,
-                removeTrailingZeros = options && (typeof options.removeTrailingZeros == 'boolean') ? options.removeTrailingZeros : true,
-                unitStr = length_height_unit(id); //'m';
+                removeTrailingZeros = typeof options.removeTrailingZeros == 'boolean' ? options.removeTrailingZeros : true,
+                unitStr = get_length_height_unit(id);
 
             //If unit = m and value > 1000 => convert to km and set digits = 3
-            if ((ns.globalSetting.get(id) == ns.unit.METRIC) && (Math.abs(value) >= 1000)){
-                unitStr = length_height_unit(ns.unit.METRIC2); //'km';
+            if (!options.keepUnit && (ns.globalSetting.get(id) == ns.unit.METRIC) && (Math.abs(value) >= 1000)){
+                unitStr = length_height_unit(ns.unit.METRIC2); //='km';
                 value = value / 1000;
                 nrOfDigits = 3;
             }
@@ -105,31 +105,42 @@
             return ns.number.numberFixedWidth(get( value ), nrOfDigits, removeTrailingZeros) + '&nbsp;' + unitWithLink(unitStr, options && options.withUnitLink);
     }
 
-    function length_height_unit(id){
+    function length_height_unit(unitId){
         var unit = '';
-        switch (ns.globalSetting.get(id)){
+        switch (unitId){
             case ns.unit.METRIC  : unit =  'm'; break;
             case ns.unit.METRIC2 : unit = 'km'; break;
             case ns.unit.FEET    : unit = 'ft'; break;
             case ns.unit.NAUTICAL: unit = 'nm'; break;
         }
         return unit;
+
+    }
+
+    function get_length_height_unit(settingId){
+        return length_height_unit( ns.globalSetting.get(settingId) );
     }
 
     function length_height_unit_format(id){
-        return unitWithLink(length_height_unit(id), true);
+        return unitWithLink(get_length_height_unit(id), true);
     }
 
 
 
     //length
-    addFormat({id: 'length',        format: function( value, options ){ return length_height_format( 'length', ns.unit.getLength, value, options ); } });
+    addFormat({id: 'length',        format: function( value, options = {}){ return length_height_format( 'length', ns.unit.getLength, value, options ); } });
 
     //length unit
     addFormat({id: 'length_unit',   format: function(){ return length_height_unit_format('length'); } });
 
     //height
-    addFormat({id: 'height',        format: function( value, options ){ return length_height_format( 'height', ns.unit.getHeight, value, options ); } });
+    addFormat({id: 'height',        format: function( value, options = {}){
+                                        options = options || {};
+                                        if (options.keepUnit == undefined)
+                                            options.keepUnit = true;
+                                        return length_height_format( 'height', ns.unit.getHeight, value, options );
+                                    }
+    });
 
     //height unit
     addFormat({id: 'height_unit',   format: function(){ return length_height_unit_format('height'); }
