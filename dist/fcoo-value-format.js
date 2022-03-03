@@ -90,13 +90,22 @@
     }
 
 
-    function length_height_format( id, get, value, options = {}){
+    function length_height_format( id, get, value, options = {}, isHeight){
             var nrOfDigits = 0,
                 removeTrailingZeros = typeof options.removeTrailingZeros == 'boolean' ? options.removeTrailingZeros : true,
-                unitStr = get_length_height_unit(id);
+                unitId = ns.globalSetting.get(id),
+                unitStr = length_height_unit(unitId);
+
+
+            //height in km or nm gets 1 decimal
+            if (isHeight && ((unitId == ns.unit.METRIC2) || (unitId == ns.unit.NAUTICAL))){
+                value = Math.round(value);
+                nrOfDigits = 3;
+            }
+
 
             //If unit = m and value > 1000 => convert to km and set digits = 3
-            if (!options.keepUnit && (ns.globalSetting.get(id) == ns.unit.METRIC) && (Math.abs(value) >= 1000)){
+            if (!options.keepUnit && (unitId == ns.unit.METRIC) && (Math.abs(value) >= 1000)){
                 unitStr = length_height_unit(ns.unit.METRIC2); //='km';
                 value = value / 1000;
                 nrOfDigits = 3;
@@ -138,7 +147,7 @@
                                         options = options || {};
                                         if (options.keepUnit == undefined)
                                             options.keepUnit = true;
-                                        return length_height_format( 'height', ns.unit.getHeight, value, options );
+                                        return length_height_format( 'height', ns.unit.getHeight, value, options, true );
                                     }
     });
 
