@@ -203,7 +203,7 @@
                 case ns.unit.GRADIAN: unitStr = '<sup>g</sup>'; break; //or <sup>c</sup> or <sup>R</sup>
             }
 
-            return formatNumber(ns.unit.getDirection( value ), options ) +  unitWithLink(unitStr, options.withUnit);
+            return formatNumber(ns.unit.getDirection( value ), options ) +  unitWithLink(unitStr, options.withUnitLink);
         }
     });
 
