@@ -81,12 +81,16 @@
     *************************************/
     setGlobalEvent( ns.events.UNITCHANGED );
 
-    ns._globalSetting_edit_UNITCHANGED = function(){
+    ns._globalSetting_edit_UNITCHANGED = function(event){
         ns.globalSetting.edit(ns.events.UNITCHANGED);
+
+        if (event && event.stopPropagation)
+            event.stopPropagation();
+        return false;
     };
 
     function unitWithLink(unitStr, withLink){
-        return withLink ? '<a href="javascript:fcoo._globalSetting_edit_UNITCHANGED()">' + unitStr + '</a>' : unitStr;
+        return withLink ? '<a href="javascript:undefined" onclick="return fcoo._globalSetting_edit_UNITCHANGED(event);">' + unitStr + '</a>' : unitStr;
     }
 
 
