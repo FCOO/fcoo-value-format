@@ -196,7 +196,12 @@
         }
     });
 
-    //direction
+       //direction
+    function adjustDirection(direction, options = {}){
+        direction = parseFloat( direction+'');
+        return (direction + 360 + (options.directionFrom || options.from ? 180 : 0)) % 360;
+    }
+
     addFormat({
         id    : 'direction',
         format: function( value, options ){
@@ -206,7 +211,7 @@
                 case ns.unit.DEGREE : unitStr = '<sup>o</sup>'; break;
                 case ns.unit.GRADIAN: unitStr = '<sup>g</sup>'; break; //or <sup>c</sup> or <sup>R</sup>
             }
-
+            value = adjustDirection(value, options);
             return formatNumber(ns.unit.getDirection( value ), options ) +  unitWithLink(unitStr, options.withUnitLink);
         }
     });
@@ -223,7 +228,7 @@
     var sectionDeg = 360/(ns.directionText.length-1);
 
     ns.directionAsText = function(direction, directionFrom){
-        direction = (direction + 360 + (directionFrom ? 180 : 0)) % 360;
+        direction = adjustDirection(direction, {directionFrom: directionFrom});
         return ns.directionText[Math.round(direction / sectionDeg)];
     };
 
@@ -232,10 +237,10 @@
     addFormat({
         id    : 'direction_text',
         format: function( value, options ){
-                    return ns.directionAsText(value, options && (options.directionFrom || options.from));
+                    value = adjustDirection(value, options);
+                    return ns.directionText[Math.round(value / sectionDeg)];
                 }
     });
-
 
     //speed and direction unit - also updated on language changed
     setGlobalEvent( ns.events.UNITCHANGED + ' ' + ns.events.LANGUAGECHANGED );
